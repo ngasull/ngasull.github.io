@@ -1,0 +1,18 @@
+.site-header {
+  background: $color-tertiary;
+  border-bottom: 1px solid $color-quinary;
+  padding: $spacing-s 0;
+
+  a {
+    color: $color-secondary;
+  }
+}
+
+.site-nav {
+  float: right;
+}
+
+.site-nav-link {
+  margin-left: $spacing-m;
+  font-variant: small-caps;
+}

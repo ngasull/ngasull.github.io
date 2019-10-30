@@ -1,0 +1,16 @@
+.site-footer {
+  padding: $spacing-m 0;
+  background: $color-tertiary;
+}
+
+.social-entry {
+  display: block;
+}
+
+.social-icon {
+  width: 16px;
+  height: 16px;
+  vertical-align: text-top;
+  margin-right: 4px;
+  fill: $color-secondary;
+}
