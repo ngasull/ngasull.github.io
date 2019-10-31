@@ -20,6 +20,7 @@ description: >-
   likes functional programming and aspires to game design.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://ngasull.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+permalink: "/:title"
 show_excerpts: true
 
 linkedin_username: ngasull
