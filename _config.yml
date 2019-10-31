@@ -31,6 +31,7 @@ rss: RSS
 markdown: kramdown
 plugins:
   - jekyll-feed
+  - jekyll-assets
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
