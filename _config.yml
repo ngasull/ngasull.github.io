@@ -28,6 +28,9 @@ github_username: ngasull
 twitter_username: ngasull
 rss: RSS
 
+kramdown:
+  input: GFM
+
 disqus:
   shortname: ngasull
 
