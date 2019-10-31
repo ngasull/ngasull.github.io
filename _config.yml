@@ -27,6 +27,9 @@ github_username: ngasull
 twitter_username: ngasull
 rss: RSS
 
+disqus:
+  shortname: ngasull
+
 # Build settings
 markdown: kramdown
 plugins:
