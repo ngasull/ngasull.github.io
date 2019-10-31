@@ -6,7 +6,7 @@ layout: default
   <h2>{{ page.list_title | default: "Posts" }}</h2>
   {%- for post in site.posts -%}
   <article>
-    <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+    {{ post.date | date: "%Y.%m.%-d" }}
     <h3>
       <a href="{{ post.url | relative_url }}">
         {{ post.title | escape }}
