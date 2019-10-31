@@ -7,15 +7,11 @@
   font-size: 2rem;
 }
 
-.social-entry {
-  display: block;
-  color: $color-secondary;
-}
-
 .social-icon {
-  width: 16px;
-  height: 16px;
+  width: 1.6rem;
+  height: 1.6rem;
   vertical-align: text-top;
-  margin-right: 4px;
-  fill: $color-secondary;
+  padding: $spacing-m / 2;
+  margin: -$spacing-m / 2 0;
+  fill: currentColor;
 }

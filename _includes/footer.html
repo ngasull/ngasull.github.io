@@ -3,9 +3,10 @@
 
   <div class="container">
 
-    <div class="site-footer-description two-thirds col">{{ site.description | escape }}</div>
+    {%- assign current_year = "now" | date: "%Y" | times: 1 -%}
+    Copyright © 2019{%- if current_year > 2019 -%}-{{ current_year }}{%- endif -%}{{ " " }}Nicolas Gasull
 
-    <address class="social-list one-third col">
+    <address class="u-right social-list">
       {%- include social.html -%}
     </address>
 

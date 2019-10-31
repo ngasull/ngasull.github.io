@@ -6,7 +6,7 @@
     <b><a class="site-title" rel="author" href="{{ "/" | relative_url }}">{{ site.title | escape }}</a></b>
 
     {%- if page_paths -%}
-      <nav class="site-nav">
+      <nav class="u-right">
         {%- for path in page_paths -%}
           {%- assign my_page = site.pages | where: "path", path | first -%}
           {%- if my_page.title -%}

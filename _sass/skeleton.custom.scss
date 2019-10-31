@@ -245,24 +245,16 @@ a {
   color: currentColor;
   text-decoration: none;
 }
+a:focus,
 a:hover {
-  color: currentColor;
-  text-decoration: underline;
+  color: $color-quaternary;
 }
 
 div,
 p,
-nav,
-address,
-section,
-header,
-footer {
+section {
   > a {
     color: $color-primary;
-  }
-  > a:focus,
-  > a:hover {
-    color: $color-secondary;
   }
 }
 
@@ -491,10 +483,10 @@ form {
   max-width: 100%;
   box-sizing: border-box;
 }
-.u-pull-right {
+.u-right {
   float: right;
 }
-.u-pull-left {
+.u-left {
   float: left;
 }
 
