@@ -4,7 +4,7 @@
   border-bottom: 1px solid $color-quinary;
   min-height: 3.2rem;
   line-height: 3.2rem;
-  padding: $spacing-s ($spacing-m + 1.8rem + $spacing-s) $spacing-s $spacing-s;
+  padding: $spacing-s ($spacing-m + 1.8rem + $spacing-s) $spacing-s $spacing-m;
   font-size: 2rem;
   font-variant: small-caps;
   letter-spacing: 0.1rem;
@@ -28,7 +28,7 @@
 .hamburger {
   position: absolute;
   top: 0;
-  right: $spacing-s;
+  right: $spacing-m - $spacing-s;
   padding: $spacing-s;
   cursor: pointer;
 }
@@ -47,7 +47,7 @@
 
 @media (min-width: $viewport-grid-limit) {
   .site-header {
-    padding: $spacing-s;
+    padding: $spacing-s $spacing-m;
   }
 
   .header-title,
@@ -63,7 +63,7 @@
 
   .header-nav {
     display: inline-block;
-    right: $spacing-s + $spacing-s; /* Padding + last link's margin */
+    right: $spacing-m - $spacing-s; /* Padding - last link's margin */
     text-align: right;
   }
 
