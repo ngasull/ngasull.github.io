@@ -40,7 +40,7 @@
 }
 
 /* For devices larger than 550px */
-@media (min-width: 550px) {
+@media (min-width: $viewport-grid-limit) {
   .container {
     width: 80%;
   }
@@ -208,7 +208,7 @@ h6 {
 }
 
 /* Larger than phablet */
-@media (min-width: 550px) {
+@media (min-width: $viewport-grid-limit) {
   h1 {
     font-size: 5rem;
   }
@@ -538,7 +538,7 @@ there.
 }
 
 /* Larger than phablet (also point when grid becomes active) */
-@media (min-width: 550px) {
+@media (min-width: $viewport-grid-limit) {
 }
 
 /* Larger than tablet */

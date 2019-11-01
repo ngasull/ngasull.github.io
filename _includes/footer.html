@@ -3,10 +3,12 @@
 
   <div class="container">
 
-    {%- assign current_year = "now" | date: "%Y" | times: 1 -%}
-    Copyright © 2019{%- if current_year > 2019 -%}-{{ current_year }}{%- endif -%}{{ " " }}Nicolas Gasull
+    <div class="one-half col">
+      {%- assign current_year = "now" | date: "%Y" | times: 1 -%}
+      Copyright © 2019{%- if current_year > 2019 -%}-{{ current_year }}{%- endif -%}{{ " " }}Nicolas&nbsp;Gasull
+    </div>
 
-    <address class="u-right social-list">
+    <address class="social-list one-half col">
       {%- include social.html -%}
     </address>
 

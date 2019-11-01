@@ -1,10 +1,11 @@
 .site-footer {
-  padding: $spacing-m 0;
+  padding: $spacing-m;
   background: $color-tertiary;
+  text-align: center;
 }
 
-.site-footer-description {
-  font-size: 2rem;
+.social-list {
+  margin-top: $spacing-s;
 }
 
 .social-icon {
@@ -14,4 +15,15 @@
   padding: $spacing-m / 2;
   margin: -$spacing-m / 2 0;
   fill: currentColor;
+}
+
+@media (min-width: $viewport-grid-limit) {
+  .site-footer {
+    text-align: inherit;
+  }
+
+  .social-list {
+    text-align: right;
+    margin-top: 0;
+  }
 }
