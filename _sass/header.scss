@@ -4,7 +4,7 @@
   border-bottom: 1px solid $color-quinary;
   min-height: 3.2rem;
   line-height: 3.2rem;
-  padding: $spacing-s;
+  padding: $spacing-s ($spacing-m + 1.8rem + $spacing-s) $spacing-s $spacing-s;
   font-size: 2rem;
   font-variant: small-caps;
   letter-spacing: 0.1rem;
@@ -13,7 +13,6 @@
 
 .header-title {
   display: inline-block;
-  margin: 0 $spacing-m + 1.8rem;
 }
 
 .header-date {
@@ -43,14 +42,14 @@
 }
 
 .header-nav-link {
-  margin-left: $spacing-m;
-
-  &:first-child {
-    margin: 0;
-  }
+  margin: 0 $spacing-s;
 }
 
 @media (min-width: $viewport-grid-limit) {
+  .site-header {
+    padding: $spacing-s;
+  }
+
   .header-title,
   .header-nav {
     position: absolute;
@@ -64,7 +63,7 @@
 
   .header-nav {
     display: inline-block;
-    right: $spacing-m;
+    right: $spacing-s + $spacing-s; /* Padding + last link's margin */
     text-align: right;
   }
 
