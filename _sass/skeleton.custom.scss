@@ -256,8 +256,8 @@ input[type="button"] {
   text-decoration: none;
   white-space: nowrap;
   background-color: transparent;
-  border-radius: 4px;
-  border: 1px solid $color-tertiary;
+  border-radius: 3px;
+  border: 1px solid $color-quinary;
   cursor: pointer;
   box-sizing: border-box;
 }
@@ -271,7 +271,7 @@ button:focus,
 input[type="submit"]:focus,
 input[type="reset"]:focus,
 input[type="button"]:focus {
-  color: $color-tertiary;
+  color: $color-quaternary;
   border-color: $color-quaternary;
   outline: 0;
 }
@@ -294,9 +294,8 @@ button.button-primary:focus,
 input[type="submit"].button-primary:focus,
 input[type="reset"].button-primary:focus,
 input[type="button"].button-primary:focus {
-  color: $color-initial;
-  background-color: $color-secondary;
-  border-color: $color-secondary;
+  background-color: $color-quaternary;
+  border-color: $color-quaternary;
 }
 
 /* Forms
@@ -312,13 +311,12 @@ textarea,
 select {
   height: 38px;
   padding: 6px 10px; /* The 6px vertically centers text on FF, ignored by Webkit */
-  background-color: $color-initial;
   border: 1px solid $color-quaternary;
-  border-radius: 4px;
+  border-radius: 3px;
   box-shadow: none;
   box-sizing: border-box;
 }
-/* Removes awkward default styles on some inputs for iOS */
+/* Removes awkward default styles on some inputs for iOS
 input[type="email"],
 input[type="number"],
 input[type="search"],
@@ -331,8 +329,9 @@ textarea {
   -moz-appearance: none;
   appearance: none;
 }
+*/
 textarea {
-  min-height: 65px;
+  min-height: 90px;
   padding-top: 6px;
   padding-bottom: 6px;
 }
@@ -400,7 +399,7 @@ code {
   font-size: 90%;
   white-space: nowrap;
   background: #282a36; /* Dracula theme's background */
-  border-radius: 4px;
+  border-radius: 3px;
 }
 pre > code {
   display: block;
