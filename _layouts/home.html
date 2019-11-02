@@ -6,8 +6,9 @@ layout: default
   <h2>{{ page.list_title | default: "Posts" }}</h2>
   {%- for post in site.posts -%}
   <article>
-    {{ post.date | date: "%Y.%m.%-d" }}
     <h3>
+      <span class="home-post-date">{{ post.date | date: "%Y.%m.%-d" }}</span>
+      <br/>
       <a href="{{ post.url | relative_url }}">
         {{ post.title | escape }}
       </a>
