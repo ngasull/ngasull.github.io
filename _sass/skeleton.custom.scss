@@ -229,9 +229,11 @@ a:hover {
   text-decoration: underline;
 }
 
+li,
 nav,
 p,
-section {
+section,
+td {
   > a {
     color: $color-primary;
   }
@@ -425,11 +427,15 @@ blockquote {
 
 /* Tables
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
+table {
+  border-collapse: collapse;
+}
+
 th,
 td {
   padding: 12px 15px;
   text-align: left;
-  border-bottom: 1px solid $color-quaternary;
+  border-bottom: 1px solid $color-quinary;
 }
 th:first-child,
 td:first-child {
