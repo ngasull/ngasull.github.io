@@ -508,6 +508,17 @@ hr {
   clear: both;
 }
 
+/* NG Additions */
+figure > img {
+  display: block;
+  margin: auto;
+}
+
+figcaption {
+  text-align: center;
+  font-style: italic;
+}
+
 /* Media Queries
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 /*
