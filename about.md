@@ -4,7 +4,7 @@ title: About
 permalink: /about/
 ---
 
-Hi 👋 I'm Nicolas Gasull, _aka_ Sonic Gull across art and game development communities.
+Hi 👋 I'm Nicolas Gasull, _aka_ blint or Sonic Gull across art and game development communities.
 
 I started my carrer building a software development expertise specialized in **web technologies**. I love **software architecture** and the challenges that come with it, letting a team stay productive as the code base grows. I'm also a **functional programming** enthusiast who always seeks for effective **simplicity** over fancy complexity.
 
