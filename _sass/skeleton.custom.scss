@@ -229,6 +229,7 @@ a:hover {
   text-decoration: underline;
 }
 
+figcaption,
 li,
 nav,
 p,
@@ -509,6 +510,7 @@ hr {
 }
 
 /* NG Additions */
+figure > audio,
 figure > img {
   display: block;
   margin: auto;
@@ -516,7 +518,9 @@ figure > img {
 }
 
 figcaption {
+  margin-top: $spacing-s;
   text-align: center;
+  font-size: 1.5rem;
   font-style: italic;
 }
 
