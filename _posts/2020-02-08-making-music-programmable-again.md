@@ -1,12 +1,12 @@
 ---
 layout: post
-permalink: "modern-video-game-music-synthesis"
-title:  "What about modern video game music synthesis?"
+permalink: "making-music-programmable-again"
+title:  "Making music programmable again"
 date:   2020-02-08 10:00:00 +0100
 categories: music videogames development
 ---
 
-For adepts of retro-gaming having some foundation in music, retro-gaming music is a nice area to dig into: it has restrictive musicality, which enables to focus on composition and strong auditive identity.
+For adepts of retro-gaming who have some foundation in music, retro-gaming music is a nice area to dig into: it has restrictive musicality, which enables to focus on composition and strong auditive identity.
 But after weeks or even months of research, I came to realize how sub-developed music synthesis could be in interactive systems like video games.
 
 This article gives some context about how music used to be made in video games,
@@ -16,19 +16,28 @@ and eventually opens some doors to new creative horizons.
 
 ## Game music in the 90's
 
-Retro game music is often referred as **chiptune** as sound used to be synthesized on-the-go by the device's sound chip or card.
+Retro games used to synthesize sound on-the-go by the device's sound chip or card. This is why retro game music is often referred as **chiptune**.
 Many artists [still compose chiptune nowadays](http://battleofthebits.org/) - maybe because nostalgia, or maybe because chiptune focuses on composition rather than picking and tweaking instruments, effects and mastering.
 Anyhow, it's an amazing discipline for the hobbyist composer!
+
+<figure>
+  <audio controls>
+    <source src="{{ "/assets/audio/flamerepellent-sunvox.ogg" | relative_url }}" type="audio/ogg">
+  </audio>
+  <figcaption>Quick copycat I made based off <a href="https://fearofdark.bandcamp.com/album/the-coffee-zone">Fearofdark's amazing work ❤️</a></figcaption>
+</figure>
+
+Chiptune is often composed with a _tracker_.
+In a tracker, audio channels are explicitly separated across vertical **tracks**, notes are textually sequenced and can each have its own **instrument** and receive a variety of effects.
+Trackers are here to allow composition while enforcing control over audio channels.
+
 
 <figure>
   <img alt="FastTracker2 screenshot" src="{{ "/assets/img/FastTracker2.png" | relative_url }}" />
   <figcaption>FastTracker 2, a DOS music tracker</figcaption>
 </figure>
 
-Chiptune is often composed the _tracker_ way, which mainly differs from the sheet/_piano roll_ way by the explicit separation of audio channels and their way to manage effects and textual note sequences instead of visual edition in space.
-Trackers are here to allow composition while enforcing control over audio channels thanks to the vertical **tracks** layout.
-
-Although many claim the benefits of the tracker layout because of its compactness, I still think it's rather outdated and prevents picturing the music well. The main alternative layout, the **piano roll**, comes closer to music sheets which is the standard of music composition. Notes can intuitively be spanned across time, and music layers can be "drawn".
+Although many claim the benefits of the tracker layout because of its compactness, I still think it's rather outdated and prevents picturing the music well. The main alternative layout, the **piano roll**, comes closer to music sheets which are the standard of music composition. Notes can intuitively be spanned across time, and music layers can be "drawn".
 
 <figure>
   <img alt="LMMS screenshot" src="{{ "/assets/img/LMMS_PianoRoll.png" | relative_url }}" />
