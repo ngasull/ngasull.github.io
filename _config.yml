@@ -17,9 +17,9 @@ title: A Developer's Journey
 author: Nicolas Gasull
 description: >-
   Experiences and thoughts of a developer who
-  likes functional programming and aspires to game design.
+  enjoys functional programming and aspires to game design.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://ngasull.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://nicolas.gasull.net" # the base hostname & protocol for your site, e.g. http://example.com
 permalink: "/:title"
 show_excerpts: true
 
@@ -39,6 +39,7 @@ markdown: kramdown
 plugins:
   - jekyll-feed
   - jekyll-assets
+  - jekyll-sitemap
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list

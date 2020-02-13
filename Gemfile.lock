@@ -261,6 +261,7 @@ DEPENDENCIES
   github-pages
   jekyll-assets
   jekyll-feed (~> 0.6)
+  jekyll-sitemap
   tzinfo-data
 
 BUNDLED WITH
