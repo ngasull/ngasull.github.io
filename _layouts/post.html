@@ -4,16 +4,7 @@ layout: default
 <article itemscope itemtype="http://schema.org/BlogPosting">
 
   <header>
-    <nav class="post-meta">
-      <a href="{{ '/' | relative_url }}">Blog</a>
-      &raquo; <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
-        {{ page.date | date: "%Y.%m.%d" }}
-      </time>
-      {%- if page.author -%}
-        • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ page.author }}</span></span>
-      {%- endif -%}
-      &raquo; {{ page.categories | join: ' • ' }}
-    </nav>
+    {%- include post-meta.html post=page -%}
     <h1 itemprop="name headline">{{ page.title | escape }}</h1>
   </header>
 

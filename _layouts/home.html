@@ -5,23 +5,27 @@ layout: default
 {%- if site.posts.size > 0 -%}
   <h2>{{ page.list_title | default: "Posts" }}</h2>
   {%- for post in site.posts -%}
-  <article>
-    <h3>
-      <span class="home-post-date">{{ post.date | date: "%Y.%m.%d" }}</span>
-      <br/>
-      <a href="{{ post.url | relative_url }}">
-        {{ post.title | escape }}
-      </a>
-    </h3>
-    {%- if site.show_excerpts -%}
-      {{ post.excerpt }}
-    {%- endif -%}
-    <p>
-      <a href="{{ post.url | relative_url }}">
-        📖 Read the article
-      </a>
-    </p>
-  </article>
+    {% if forloop.index > 1 %}
+      <hr/>
+    {% endif %}
+    <article>
+      <header>
+        {%- include post-meta.html post=post -%}
+        <h3>
+          <a href="{{ post.url | relative_url }}">
+            {{ post.title | escape }}
+          </a>
+        </h3>
+      </header>
+      {%- if site.show_excerpts -%}
+        {{ post.excerpt }}
+      {%- endif -%}
+      <p>
+        <a href="{{ post.url | relative_url }}">
+          📖 Read the article
+        </a>
+      </p>
+    </article>
   {%- endfor -%}
 {%- else -%}
 <p>
