@@ -107,4 +107,4 @@ Despite incredible technology evolutions, I feel like a whole dimension is missi
 For hobbyists, music creativity should be as accessible as visual arts.
 Music-rich games should be able to fit on a cartridge or a floppy disk like back in the days and should have a well-defined auditive identity.
 
-If this article resonates with you too, feel free to share, [tweet](https://twitter.com/ngasull) or [reach out to me]({{ "/about#contact-me" | relative_url }}) and I'll be happy to know what you think and what we can do 🙂 I really believe that the creative community deserves better!
+If this article resonates with you too, feel free to share, [tweet](https://twitter.com/ngasull/status/1228238628729409536) or [reach out to me]({{ "/about#contact-me" | relative_url }}) and I'll be happy to know what you think and what we can do 🙂 I really believe that the creative community deserves better!
