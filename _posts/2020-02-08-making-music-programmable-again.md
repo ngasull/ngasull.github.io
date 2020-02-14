@@ -3,7 +3,7 @@ layout: post
 permalink: "making-music-programmable-again"
 title:  "Making music programmable again"
 date:   2020-02-08 10:00:00 +0100
-categories: music videogames development
+categories: music gamedev
 ---
 
 For adepts of retro-gaming who have some foundation in music, retro-gaming music is a nice area to dig into: it has restrictive musicality, which enables to focus on composition and strong auditive identity.

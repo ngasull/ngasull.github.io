@@ -3,7 +3,7 @@ layout: post
 permalink: "videogame-music-for-noobs"
 title:  "Video game music for noobs"
 date:   2019-12-19 10:00:00 +0100
-categories: music video-games
+categories: music gamedev
 ---
 
 - Video game music for noobs brainstorming

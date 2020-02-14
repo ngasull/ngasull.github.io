@@ -3,7 +3,7 @@ layout: post
 permalink: "simply-efficiently-use-vim-multiple-files"
 title:  "How to simply use vim across multiple files"
 date:   2019-11-02 10:00:00 +0100
-categories: vim productivity
+categories: dev
 ---
 
 Vim provides its own **unique** way to edit code. Discerning what makes it really different helps a lot figuring out why so many developers love vim. This article attempts to summarize these core concepts and provides a reasonable set of tips for an efficient use of **vim across multiple files**.
