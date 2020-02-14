@@ -52,14 +52,15 @@ Running **`:find` on a folder** opens _netrw_, a simple yet efficient file explo
 
 A developer's workflow often involves going back and forth in a code base. Although `:find` or [fzf](https://github.com/junegunn/fzf.vim) are great for quickly opening files, we can go faster once they have already been opened in buffers.
 
+- **`Ctrl-6`** swaps to last opened buffer
 - **`Ctrl-o`** moves the cursor to the previous location it last _jumped_ from
 - **`Ctrl-i`** moves the cursor to the next _jump_
 
-These commands take advantage of the [jumplist](https://vim.fandom.com/wiki/Jumping_to_previously_visited_locations) which contains all cursor _jumps_, including inside the same buffer. This is much more powerful than just "tab switching" in other editors as you can extremely quicky jump back and forth more precise contexts.
+The two latter commands take advantage of the [jumplist](https://vim.fandom.com/wiki/Jumping_to_previously_visited_locations) which contains all cursor _jumps_, including inside the same buffer. This is much more powerful than just "tab switching" in other editors as you can extremely quicky jump back and forth more precise contexts. Although they are precise, they might take you more time than a simple `Ctrl-6` swap-back or than moving away with a quick `:find` or _fzf_.
 
 ### Closing buffers
 
-It won't cause any trouble to keep any number of buffers open. However, as we mainly rely on `Ctrl-o`/`Ctrl-i` to navigate, we want to keep the jumplist history clean. So if, for example, a file has been opened by mistake, all what is needed is **`:bw`**.
+It won't cause any trouble to keep any number of buffers open and it is often recommended to keep them open. However, when we mainly rely on `Ctrl-o`/`Ctrl-i` to navigate, we want to keep the jumplist history clean. So if, for example, a file has been opened by mistake, all what is needed is **`:bw`**.
 
 
 ## Windows
@@ -85,6 +86,7 @@ In buffer | Action
 **`:find file`** | Open `file`
 **`:find directory`** | Explore `directory`<br/>`:find .` for root directory
 **`:find`** | Explore current file's directory
+**`<C-6>`** | Swap with previous buffer
 **`<C-o>`** | Jump back
 **`<C-i>`** | Jump next
 **`:split`** | Split horizontally
@@ -101,6 +103,7 @@ In _netrw_ | Action
 --: | ---
 **`i`** | Change layout<br/>_list > details > ls > tree_
 **`%`** | New file
+**`d`** | New directory
 **`R`** | Rename file
 **`D`** | Delete file
 
