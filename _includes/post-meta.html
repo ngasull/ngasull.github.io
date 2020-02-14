@@ -1,0 +1,12 @@
+<nav class="post-meta">
+  <a href="{{ '/' | relative_url }}">Blog</a>
+  &raquo; <time datetime="{{ include.post.date | date_to_xmlschema }}" itemprop="datePublished">
+    {{ include.post.date | date: "%Y.%m.%d" }}
+  </time>
+  {%- if include.post.author -%}
+    • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ include.post.author }}</span></span>
+  {%- endif -%}
+  {%- if include.post.categories.size > 0 -%}
+    &raquo; {{ include.post.categories | join: '&nbsp;•&nbsp;' }}
+  {%- endif -%}
+</nav>
