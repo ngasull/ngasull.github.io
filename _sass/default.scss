@@ -23,12 +23,6 @@ body {
   display: inline-block;
 }
 
-.header-date {
-  pointer-events: none;
-  font-size: 1.5rem;
-  vertical-align: bottom;
-}
-
 .header-nav {
   display: none;
 }
@@ -103,7 +97,8 @@ body {
 }
 
 .post-meta {
-  display: none;
+  font-size: 1.5rem;
+  margin-bottom: $spacing-s;
 }
 
 .h-permalink:hover {
