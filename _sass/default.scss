@@ -53,6 +53,10 @@ body {
   margin: 0 $spacing-s;
 }
 
+.when-grid {
+  display: none;
+}
+
 @media (min-width: $viewport-grid-limit) {
   .site-header {
     padding: $spacing-s $spacing-m;
@@ -77,6 +81,10 @@ body {
 
   .hamburger {
     display: none;
+  }
+
+  .when-grid {
+    display: initial;
   }
 }
 
