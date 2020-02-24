@@ -10,41 +10,26 @@ body {
 .site-header {
   position: relative;
   background: $color-tertiary;
-  min-height: 3.2rem;
-  line-height: 3.2rem;
-  padding: $spacing-s ($spacing-m + 1.8rem + $spacing-s) $spacing-s $spacing-m;
-  font-size: 2rem;
+  min-height: 2.5rem;
+  line-height: 2.5rem;
+  padding: $spacing-s $spacing-m;
+  font-size: 1.8rem;
   font-variant: small-caps;
   letter-spacing: 0.1rem;
-  text-align: center;
 }
 
 .header-title {
-  display: inline-block;
-}
-
-.header-nav {
-  display: none;
-}
-
-.hamburger {
-  position: absolute;
-  top: 0;
-  right: $spacing-m - $spacing-s;
-  padding: $spacing-s;
-  cursor: pointer;
-}
-
-#hamburger-chk {
-  display: none;
-}
-
-#hamburger-chk:checked ~ .header-nav {
-  display: inline-block;
+  float: left;
 }
 
 .header-nav-link {
   margin: 0 $spacing-s;
+}
+
+.header-nav {
+  text-align: right;
+  overflow: auto hidden;
+  scrollbar-width: none;
 }
 
 .when-grid {
@@ -53,7 +38,9 @@ body {
 
 @media (min-width: $viewport-grid-limit) {
   .site-header {
-    padding: $spacing-s $spacing-m;
+    min-height: 3.2rem;
+    line-height: 3.2rem;
+    font-size: 2rem;
   }
 
   .header-title,
@@ -71,10 +58,6 @@ body {
     display: inline-block;
     right: $spacing-m - $spacing-s; /* Padding - last link's margin */
     text-align: right;
-  }
-
-  .hamburger {
-    display: none;
   }
 
   .when-grid {
