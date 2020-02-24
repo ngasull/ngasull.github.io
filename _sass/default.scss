@@ -72,16 +72,17 @@ body {
   padding: $spacing-m 0;
 }
 
-.home-post-date {
-  margin-right: $spacing-s;
-  font-size: 1.5rem;
-  letter-spacing: 0.1rem;
-  vertical-align: middle;
+article > header {
+  margin-bottom: $spacing-m;
+
+  h1,
+  h3 {
+    margin-bottom: 0;
+  }
 }
 
 .post-meta {
   font-size: 1.5rem;
-  margin-bottom: $spacing-s;
 }
 
 .h-permalink:hover {

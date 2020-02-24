@@ -5,17 +5,14 @@ layout: default
 {%- if site.posts.size > 0 -%}
   <h2>{{ page.list_title | default: "Posts" }}</h2>
   {%- for post in site.posts -%}
-    {% if forloop.index > 1 %}
-      <hr/>
-    {% endif %}
     <article>
       <header>
-        {%- include post-meta.html post=post -%}
         <h3>
           <a href="{{ post.url | relative_url }}">
             {{ post.title | escape }}
           </a>
         </h3>
+        {%- include post-meta.html post=post -%}
       </header>
       {%- if site.show_excerpts -%}
         {{ post.excerpt }}

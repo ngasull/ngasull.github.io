@@ -4,8 +4,8 @@ layout: default
 <article itemscope itemtype="http://schema.org/BlogPosting">
 
   <header>
-    {%- include post-meta.html post=page -%}
     <h1 itemprop="name headline">{{ page.title | escape }}</h1>
+    {%- include post-meta.html post=page -%}
   </header>
 
   <div itemprop="articleBody">
