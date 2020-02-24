@@ -21,7 +21,15 @@ description: >-
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://nicolas.gasull.net" # the base hostname & protocol for your site, e.g. http://example.com
 permalink: "/:title"
-show_excerpts: true
+show_excerpts: false
+
+defaults:
+  -
+    scope:
+      path: ""      # empty string for all files
+      type: posts   # limit to posts
+    values:
+      is_post: true # automatically set is_post=true for all posts
 
 linkedin_username: ngasull
 github_username: ngasull

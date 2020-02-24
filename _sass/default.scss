@@ -8,7 +8,9 @@ body {
 /* Header */
 
 .site-header {
-  position: relative;
+  position: fixed;
+  left: 0;
+  right: 0;
   background: $color-tertiary;
   min-height: 2.5rem;
   line-height: 2.5rem;
@@ -24,6 +26,10 @@ body {
 
 .header-nav-link {
   margin: 0 $spacing-s;
+}
+
+.header-nav-active {
+  font-weight: 500;
 }
 
 .header-nav {
@@ -69,12 +75,11 @@ body {
 
 .site-main {
   flex: 1;
+  margin-top: $site-header-height;
   padding: $spacing-m 0;
 }
 
 article > header {
-  margin-bottom: $spacing-m;
-
   h1,
   h3 {
     margin-bottom: 0;
@@ -83,15 +88,6 @@ article > header {
 
 .post-meta {
   font-size: 1.5rem;
-}
-
-.h-permalink:hover {
-  color: currentColor;
-  text-decoration: none;
-}
-
-#disqus_thread a {
-  color: $color-primary;
 }
 
 /* Footer */
