@@ -10,10 +10,10 @@ I started my carrer building a software development expertise specialized in **w
 
 As much as I just defined myself as a developer, I also crave artistic creativity. My experience is much lower in this domain and I'm spending more time exploring it. I especially enjoy analyzing **music composition** which I intend to express through **game dev tools development**.
 
-The Web brings us so much knowledge and connection between communities and digging into new worlds became fascinating. If you just want to discuss with me for any reason, I'd love to hear from you through the form below!&nbsp;🙂
-
 
 ## Contact me
+
+The Web brings us so much knowledge and connection between communities and digging into new worlds became fascinating. If you just want to discuss with me for any reason, I'd love to hear from you through the form below!&nbsp;🙂
 
 <form
   action="https://formspree.io/myygvdwe"
