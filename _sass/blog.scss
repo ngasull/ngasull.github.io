@@ -4,6 +4,10 @@ $blog-nav-width: 30%;
   margin-bottom: $spacing-m;
 }
 
+h1, h2, h3, h4 {
+  scroll-margin-top: $site-header-height + $spacing-m;
+}
+
 .h-permalink:hover {
   color: currentColor;
   text-decoration: none;
