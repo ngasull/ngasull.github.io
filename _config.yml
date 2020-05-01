@@ -54,7 +54,6 @@ plugins:
 # to override the default setting.
 exclude:
   - node_modules
-  - sub
 #   - Gemfile
 #   - Gemfile.lock
 #   - vendor/bundle/
