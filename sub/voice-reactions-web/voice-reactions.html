@@ -1,0 +1,66 @@
+<html>
+  <body>
+    <div id="step-picker">
+      <label for="video-picker">
+        Video à utiliser:&MediumSpace;
+        <input type="file" id="video-picker" accept="video/*" />
+      </label>
+    </div>
+
+    <div id="step-player" style="display: none">
+      <video id="video-player" controls width="100%" />
+    </div>
+    
+    <script type="text/javascript">
+      const ACTIVE_THRESHOLD = .2
+      const INACTIVE_N_THRESHOLD = 5
+      const stepPicker = document.getElementById('step-picker')
+      const stepPlayer = document.getElementById('step-player')
+      const videoPicker = document.getElementById('video-picker')
+      const submitPicker = document.getElementById('submit-picker')
+      const videoPlayer = document.getElementById('video-player')
+      let n_active = 0
+
+      videoPicker.addEventListener("change", e => {
+        const file = videoPicker.files[0]
+        if (file) {
+          videoPlayer.src = URL.createObjectURL(file)
+          stepPicker.style.display = "none"
+          stepPlayer.style.display = "block"
+        }
+
+        const audioContext = new AudioContext()
+
+        navigator.mediaDevices.getUserMedia({ audio: true })
+          .then(mediaStream => {
+            const streamSource = audioContext.createMediaStreamSource(mediaStream)
+            const scriptNode = audioContext.createScriptProcessor(4096, 1, 1)
+
+            streamSource.connect(scriptNode)
+
+            scriptNode.addEventListener('audioprocess', (audioProcessingEvent) => {
+              const frames = audioProcessingEvent.inputBuffer.getChannelData(0)
+              const average = frames.reduce((acc, f) => acc + Math.abs(f), 0) / frames.length
+
+              if (average > ACTIVE_THRESHOLD) {
+                if (n_active < 1) {
+                  videoPlayer.play()
+                }
+                n_active = INACTIVE_N_THRESHOLD
+              } else {
+                if (n_active == 1) {
+                  videoPlayer.pause()
+                }
+                n_active -= 1
+              }
+            })
+          })
+          .catch((e) => {
+            console.error(e)
+            alert("Impossible de capturer l'audio, il faut autoriser le micro pour cette page")
+          })
+      })
+
+    </script>
+  </body>
+</html>
