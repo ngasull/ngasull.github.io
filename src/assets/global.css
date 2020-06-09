@@ -58,7 +58,7 @@ figcaption {
 }
 
 @media (max-width: 750px) {
-  body {
+  body, header {
     padding: 1.5rem;
   }
 
