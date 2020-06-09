@@ -56,3 +56,28 @@ figcaption {
     visibility: visible;
   }
 }
+
+@media (max-width: 750px) {
+  body {
+    padding: 1.5rem;
+  }
+
+  details, pre, table {
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    border-radius: 0;
+    border-width: 1px 0;
+  }
+
+  table {
+    width: calc(100% + 3rem);
+  }
+
+  details, pre, td:first-child, th:first-child {
+    padding-left: 1.5rem;
+  }
+
+  details, pre, td:last-child, th:last-child {
+    padding-right: 1.5rem;
+  }
+}
