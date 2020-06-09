@@ -4,6 +4,7 @@ const path = require("path")
 exports.createPages = async ({ actions, graphql, reporter }) => {
   const { createPage } = actions
   const mdxTemplate = path.resolve("src/templates/mdxTemplate.tsx")
+  const redirectTemplate = path.resolve("src/templates/redirectTemplate.tsx")
   const result = await graphql(`
     {
       allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
@@ -13,6 +14,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
           }
           frontmatter {
             path
+            date
           }
         }
       }
@@ -33,6 +35,17 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
         slug: post.fields.slug,
       },
     })
+
+    // Maintain links to first 2 articles
+    if (new Date(post.frontmatter.date) < new Date("2020-02-09")) {
+      createPage({
+        path: post.frontmatter.path.replace(/^\/blog/, ""),
+        component: redirectTemplate,
+        context: {
+          redirect: post.frontmatter.path,
+        },
+      })
+    }
   })
 }
 
