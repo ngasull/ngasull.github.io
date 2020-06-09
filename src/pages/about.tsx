@@ -22,8 +22,8 @@ const AboutPage = () => (
       As much as I just defined myself as a developer, I also crave artistic
       creativity. My experience is much lower in this domain and I&apos;m
       spending more time exploring it. I especially enjoy analyzing{" "}
-      <b>music composition</b>
-      which I intend to express through <b>game dev tools development</b>.
+      <b>music composition</b> which I intend to express through{" "}
+      <b>game dev tools development</b>.
     </p>
 
     <h2>Contact me</h2>

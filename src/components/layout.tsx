@@ -96,9 +96,9 @@ export function Footer(): React.ReactElement {
         <Link to="/about">
           <SocialIcon icon="at" />
         </Link>
-        <Link to="/feed.xml">
+        <a href="/rss.xml">
           <SocialIcon icon="rss" />
-        </Link>
+        </a>
       </address>
     </footer>
   )
