@@ -12,12 +12,13 @@ const IndexPage: React.FC = ({ data }) => {
 
       {data.allMdx.edges.map(({ node: { frontmatter } }) => (
         <article key={frontmatter.path}>
-          <h3>{frontmatter.title}</h3>
+          <h3>
+            <Link to={frontmatter.path}>📖 {frontmatter.title}</Link>
+          </h3>
           <div>
             Blog » {frontmatter.date} »{" "}
             {frontmatter.categories.split(" ").join(" • ")}
           </div>
-          <Link to={frontmatter.path}>📖 Read the article</Link>
         </article>
       ))}
     </Layout>

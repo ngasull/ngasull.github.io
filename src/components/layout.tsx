@@ -68,6 +68,10 @@ export function Footer(): React.ReactElement {
       `}
     >
       <p>
+        <Link to="/">Go to articles 👀</Link>
+      </p>
+
+      <p>
         Copyright © 2019
         {new Date().getFullYear() > 2019 && `-${new Date().getFullYear()}`}{" "}
         <Link
