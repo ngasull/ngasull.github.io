@@ -20,8 +20,8 @@ const AboutPage = () => (
 
     <p>
       As much as I just defined myself as a developer, I also crave artistic
-      creativity. My experience is much lower in this domain and I'm spending
-      more time exploring it. I especially enjoy analyzing{" "}
+      creativity. My experience is much lower in this domain and I&apos;m
+      spending more time exploring it. I especially enjoy analyzing{" "}
       <b>music composition</b>
       which I intend to express through <b>game dev tools development</b>.
     </p>
@@ -47,7 +47,7 @@ const AboutPage = () => (
         <label>
           Message
           <br />
-          <textarea name="message"></textarea>
+          <textarea name="message" rows={6}></textarea>
         </label>
       </p>
       <button type="submit">Send</button>

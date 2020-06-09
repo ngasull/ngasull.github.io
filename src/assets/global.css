@@ -21,6 +21,10 @@ input, select, textarea {
   border: 1px solid var(--nc-tx-2);
 }
 
+textarea {
+  width: 100%;
+}
+
 figure > audio, figure > img {
   display: block;
   margin: auto;
