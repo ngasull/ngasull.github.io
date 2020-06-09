@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: `A Developer's Journey`,
+    title: `NG's Lab`,
     description: `Experiences and thoughts of a developer who enjoys functional programming and aspires to game design.`,
     author: `Nicolas Gasull`,
     siteUrl: `https://nicolas.gasull.net`,
@@ -93,7 +93,7 @@ module.exports = {
               }
             `,
             output: "/rss.xml",
-            title: "A Developer's Journey RSS",
+            title: "NG's Lab RSS",
           },
         ],
       },

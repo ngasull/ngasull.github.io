@@ -39,10 +39,16 @@ export default function Layout({
 function Header({ siteTitle }: { siteTitle: string }): React.ReactElement {
   return (
     <header>
-      <h1>
-        {siteTitle}
-        {" 🕹🎶💾"}
-      </h1>
+      <div
+        css={css`
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        `}
+      >
+        <h1>{siteTitle}</h1>
+        <h3>{"🔭🎶🕺"}</h3>
+      </div>
       <nav>
         <Link to="/">Blog</Link>
         {" / "}
