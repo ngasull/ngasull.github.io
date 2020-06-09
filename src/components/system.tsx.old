@@ -1,0 +1,264 @@
+import React, { createContext, useContext } from "react"
+import { Box, Flex, Text } from "rebass"
+import styled, {
+	CreateStyledComponentExtrinsic,
+	CreateStyledComponentIntrinsic,
+	StyledOptions,
+} from "@emotion/styled"
+import { variant } from "styled-system"
+
+export { Box, Flex, Text } from "rebass"
+
+type DisplayElement = "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p"
+type Spacing = 0 | "extraTight" | "tight" | "loose" | "base" | "extraLoose"
+
+interface ChildProps {
+	children: React.ReactNode
+}
+
+type BoxProps = React.ComponentProps<typeof Box>
+
+// Struture //
+const Div = styled.div<{ variant: any }>`
+	variant({
+		variants: {
+			primary: {}
+		}
+	})
+`
+
+export interface CreateStyled<T extends string, Theme extends object = any> {
+	<Tag extends React.ComponentType<any>, ExtraProps = {}>(
+		tag: Tag,
+		name: T,
+		variants: Record<string, Record<string, string | number>>,
+		options?: StyledOptions
+	): CreateStyledComponentExtrinsic<Tag, ExtraProps, Theme>
+
+	<Tag extends keyof JSX.IntrinsicAttributes, ExtraProps = {}>(
+		tag: Tag,
+		name: T,
+		variants: Record<string, Record<string, string | number>>,
+		options?: StyledOptions
+	): CreateStyledComponentIntrinsic<Tag, ExtraProps, Theme>
+}
+
+const aaa: CreateStyled = (component, name, variants) => {
+	return styled(component)({ scale: name, variants })
+}
+
+function styledVariant<
+	C extends keyof JSX.IntrinsicAttributes | React.ComponentType,
+	T extends string
+>(
+	component: C,
+	name: T,
+	variants: Record<string, Record<string, string | number>>
+): React.ComponentType<
+	(C extends keyof JSX.IntrinsicAttributes
+		? JSX.IntrinsicAttributes[C]
+		: React.ComponentProps<C>) & {
+		[T]: string
+	}
+> {
+	return styled(component)({ scale: name, variants })
+}
+
+export const Card: React.FC<BoxProps & {
+	title?: React.ReactNode
+	sectioned?: boolean
+	subdued?: boolean
+}> = ({ children, sectioned = true, subdued, title, ...other }) => {
+	return (
+		<Box variant={`card.${subdued ? "subdued" : "base"}`} {...other}>
+			<Div variant="salue" />
+			{title && (
+				<Text as="h2" p="loose" pb={0} variant="heading">
+					{title}
+				</Text>
+			)}
+			{sectioned ? <CardSection>{children}</CardSection> : children}
+		</Box>
+	)
+}
+
+export const CardSection: React.FC<ChildProps> = ({ children }) => {
+	return <Box p="loose">{children}</Box>
+}
+
+export const Checkbox: React.FC = () => {
+	return <Box as="input" type="checkbox" />
+}
+
+const StackContext = createContext<{ fill?: boolean; spacing: Spacing }>({
+	spacing: 0,
+})
+
+export const Stack: React.FC<ChildProps & {
+	alignItems?: "flex-start" | "center" | "flex-end" | "stretch" | "baseline"
+	alignContent?:
+		| "flex-start"
+		| "center"
+		| "flex-end"
+		| "space-between"
+		| "space-around"
+		| "stretch"
+	as?: React.ElementType
+	distribution?: "equalSpacing" | "leading" | "trailing" | "center" | "fill"
+	spacing?: Spacing
+	vertical?: boolean
+	wrap?: boolean
+}> = ({
+	children,
+	distribution,
+	spacing = "base",
+	vertical,
+	wrap,
+	...other
+}) => {
+	return (
+		<StackContext.Provider value={{ fill: distribution === "fill", spacing }}>
+			<Flex
+				pl={spacing}
+				pt={spacing}
+				flexWrap={wrap ? "wrap" : undefined}
+				flexDirection={vertical ? "column" : undefined}
+				variant={distribution && `flex.distribution.${distribution}`}
+				{...other}
+			/>
+			{React.Children.toArray(children).map((c, i) =>
+				c != null && React.isValidElement(c) && c.type !== StackItem ? (
+					<StackItem key={i}>{c}</StackItem>
+				) : (
+					c
+				)
+			)}
+		</StackContext.Provider>
+	)
+}
+
+export const StackItem: React.FC<ChildProps & {
+	as?: React.ElementType
+	fill?: boolean
+}> = ({ fill, ...other }) => {
+	const { fill: fillContext, spacing } = useContext(StackContext)
+	return (
+		<Box
+			flex={fillContext || fill ? "1 1 auto" : "0 0 auto"}
+			ml={spacing}
+			mt={spacing}
+			{...other}
+		/>
+	)
+}
+
+// Forms //
+
+type UniqueIdFactory = (prefix: string) => string
+
+export const UniqueIdFactoryContext = createContext<UniqueIdFactory>(
+	makeUniqueIdFactory()
+)
+
+export function makeUniqueIdFactory(): UniqueIdFactory {
+	let i = 0
+	return (prefix: string): string => `${prefix}${i++}`
+}
+
+export const Choice: React.FC<ChildProps & {
+	id: string
+	label: React.ReactNode
+	disabled?: boolean
+	error?: Error | boolean
+	labelHidden?: boolean
+	children?: React.ReactNode
+	helpText?: React.ReactNode
+	onClick?(): void
+	onMouseOver?(): void
+	onMouseOut?(): void
+}> = ({
+	id,
+	label,
+	disabled,
+	children,
+	labelHidden,
+	onClick,
+	onMouseOut,
+	onMouseOver,
+	...other
+}) => {
+	return (
+		<Flex
+			as="label"
+			htmlFor={id}
+			justifyContent="flex-start"
+			onClick={onClick}
+			onMouseOver={onMouseOver}
+			onMouseOut={onMouseOut}
+			py="extraTight"
+			sx={{ display: "inline-flex", cursor: !disabled && "pointer" }}
+			{...other}
+		>
+			<Flex
+				alignItems="stretch"
+				flex="0 0 auto"
+				height="1.6rem"
+				mr={labelHidden ? 0 : "tight"}
+				mt={labelHidden ? 0 : "loose"}
+				width="1.6rem"
+			>
+				{children}
+			</Flex>
+			<Text
+				color={disabled ? "ink.lightest" : undefined}
+				variant={labelHidden ? "visuallyHidden" : "body"}
+			>
+				{label}
+			</Text>
+		</Flex>
+	)
+}
+
+// Titles and Text //
+
+export const Caption: React.FC<ChildProps> = props => {
+	return <Text variant="caption" {...props} />
+}
+
+export const DisplayText: React.FC<ChildProps & {
+	as?: DisplayElement
+	variant: "ds" | "dm" | "dl" | "dxl"
+}> = ({ as = "p", ...other }) => {
+	return <Text as={as} {...other} />
+}
+
+export const Heading: React.FC<ChildProps & {
+	as?: DisplayElement
+}> = ({ as = "p", ...other }) => {
+	return <Text as={as} variant="heading" {...other} />
+}
+
+export const SubHeading: React.FC<ChildProps & {
+	as?: DisplayElement
+}> = ({ as = "p", ...other }) => {
+	return <Text as={as} variant="subheading" {...other} />
+}
+
+export const TextContainer: React.FC<BoxProps & { p?: "tight" | "loose" }> = ({
+	p = "tight",
+	...other
+}) => {
+	return <Box p={p} {...other} />
+}
+
+export const TextStyle: React.FC<ChildProps & {
+	variant: "positive" | "negative" | "strong" | "subdued" | "code"
+}> = props => {
+	return <Text {...props} />
+}
+
+export const VisuallyHidden: React.FC<ChildProps> = props => {
+	return <Box sx={{ visibility: "hidden" }} {...props} />
+}
+
+// Overlays //

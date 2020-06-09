@@ -1,0 +1,50 @@
+:root {
+	--nc-tx-1: #ffffff;
+	--nc-tx-2: #eeeeee;
+	--nc-bg-1: #000000;
+	--nc-bg-2: #111111;
+	--nc-bg-3: #222222;
+	--nc-lk-1: #3291FF;
+	--nc-lk-2: #0070F3;
+	--nc-lk-tx: #FFFFFF;
+	--nc-ac-1: #7928CA;
+	--nc-ac-tx: #FFFFFF;
+  --nc-font-sans: system-ui, Ubuntu, Oxygen, Cantarell, Roboto, -apple-system,
+    "Segoe UI", Arial, sans-serif;
+}
+
+footer {
+  margin-top: 2rem;
+}
+
+input, select, textarea {
+  border: 1px solid var(--nc-tx-2);
+}
+
+figure > audio, figure > img {
+  display: block;
+  margin: auto;
+  max-width: 100%;
+}
+
+figcaption {
+  margin-top: .5rem;
+  text-align: center;
+  font-size: 1rem;
+  font-style: italic;
+}
+
+.anchor {
+  fill: var(--nc-tx-2);
+  margin-left: 1rem;
+}
+
+@media (pointer:fine) {
+  .anchor {
+    visibility: hidden;
+  }
+
+  h2:hover .anchor, h3:hover .anchor {
+    visibility: visible;
+  }
+}
