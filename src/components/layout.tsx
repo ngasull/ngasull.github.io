@@ -48,7 +48,7 @@ function Header({ siteTitle }: { siteTitle: string }): React.ReactElement {
         {" / "}
         <Link to="/about">About</Link>
         {" / "}
-        <Link to="/rss.xml">RSS</Link>
+        <a href="/rss.xml">RSS</a>
       </nav>
     </header>
   )
