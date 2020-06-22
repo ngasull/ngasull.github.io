@@ -10,13 +10,13 @@ const IndexPage: React.FC = ({ data }) => {
       <SEO title="Home" />
       <h1>Posts</h1>
 
-      {data.allMdx.edges.map(({ node: { frontmatter } }) => (
-        <article key={frontmatter.path}>
+      {data.allMdx.edges.map(({ node: { fields, frontmatter } }) => (
+        <article key={fields.path}>
           <h3>
-            <Link to={frontmatter.path}>📖 {frontmatter.title}</Link>
+            <Link to={fields.path}>📖 {frontmatter.title}</Link>
           </h3>
           <div>
-            Blog » {frontmatter.date} »{" "}
+            Blog » {fields.date} »{" "}
             {frontmatter.categories.split(" ").join(" • ")}
           </div>
         </article>
@@ -30,10 +30,12 @@ export const query = graphql`
     allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
       edges {
         node {
+          fields {
+            path
+            date(formatString: "YYYY-MM-DD")
+          }
           frontmatter {
             title
-            path
-            date(formatString: "MMMM DD, YYYY")
             categories
           }
         }

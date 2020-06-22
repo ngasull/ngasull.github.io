@@ -8,7 +8,7 @@ import SEO from "~/components/seo"
 import { css, jsx } from "~/theme"
 
 export default function Template({ data }): React.ReactNode {
-  const { body, frontmatter, tableOfContents } = data.mdx
+  const { body, fields, frontmatter, tableOfContents } = data.mdx
   return (
     <Layout>
       <SEO title={frontmatter.title} />
@@ -19,7 +19,7 @@ export default function Template({ data }): React.ReactNode {
             margin-bottom: 2rem;
           `}
         >
-          {frontmatter.date}
+          {fields.date}
         </h6>
 
         <div itemProp="articleBody">
@@ -62,17 +62,16 @@ export default function Template({ data }): React.ReactNode {
 export const query = graphql`
   query PostBySlug($slug: String!) {
     mdx(fields: { slug: { eq: $slug } }) {
+      fields {
+        date(formatString: "MMMM DD, YYYY")
+      }
       frontmatter {
         title
-        date(formatString: "YYYY MMMM Do")
       }
       body
       excerpt
       tableOfContents
       timeToRead
-      fields {
-        slug
-      }
     }
   }
 `

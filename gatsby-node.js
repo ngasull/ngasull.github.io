@@ -10,11 +10,13 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
       allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
         nodes {
           fields {
+            date
+            lang
             slug
+            path
           }
           frontmatter {
-            path
-            date
+            categories
           }
         }
       }
@@ -28,22 +30,20 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
   }
 
   result.data.allMdx.nodes.forEach((post, index) => {
+    const { date, lang, slug, path, ...contextFields } = post.fields
+
     createPage({
-      path: post.frontmatter.path,
+      path,
       component: mdxTemplate,
-      context: {
-        slug: post.fields.slug,
-      },
+      context: { slug },
     })
 
     // Maintain links to first 2 articles
-    if (new Date(post.frontmatter.date) < new Date("2020-02-09")) {
+    if (new Date(date) < new Date("2020-02-09")) {
       createPage({
-        path: post.frontmatter.path.replace(/^\/blog/, ""),
+        path: `/${slug}`,
         component: redirectTemplate,
-        context: {
-          redirect: post.frontmatter.path,
-        },
+        context: { slug },
       })
     }
   })
@@ -52,11 +52,29 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
 exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions
   if (node.internal.type === `Mdx`) {
-    const value = createFilePath({ node, getNode })
+    const [_, date, lang, slug] = createFilePath({ node, getNode }).match(
+      /^\/(\d\d\d\d-\d\d-\d\d)-(fr|en)-([\w-]+)\/$/
+    )
+    const path = `/${lang}/blog/${slug}`
+    createNodeField({
+      name: `date`,
+      node,
+      value: date,
+    })
+    createNodeField({
+      name: `lang`,
+      node,
+      value: lang,
+    })
     createNodeField({
       name: `slug`,
       node,
-      value,
+      value: slug,
+    })
+    createNodeField({
+      name: `path`,
+      node,
+      value: path,
     })
   }
 }
