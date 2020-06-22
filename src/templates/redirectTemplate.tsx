@@ -1,13 +1,19 @@
 import { graphql } from "gatsby"
-import React, { useEffect } from "react"
+import React from "react"
+import SEO from "~/components/seo"
 
 const Redirect: React.FC<{
   data: { mdx: { fields: { path: string } } }
 }> = props => {
-  useEffect(() => {
-    document.location.replace(props.data.mdx.fields.path)
-  }, [])
-  return null
+  return (
+    <SEO title="Redirect to new route">
+      <meta
+        httpEquiv="refresh"
+        content={`0;url=${props.data.mdx.fields.path}`}
+      />
+      <link rel="canonical" href={props.data.mdx.fields.path} />
+    </SEO>
+  )
 }
 
 export const query = graphql`

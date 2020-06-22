@@ -14,8 +14,10 @@ import { css, jsx } from "~/theme"
 
 export default function Layout({
   children,
+  lang,
 }: {
   children: React.ReactNode
+  lang: "fr" | "en"
 }): React.ReactElement {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
@@ -29,32 +31,42 @@ export default function Layout({
 
   return (
     <Fragment>
-      <Header siteTitle={data.site.siteMetadata.title} />
+      <Header lang={lang} siteTitle={data.site.siteMetadata.title} />
       <main aria-label="Content">{children}</main>
       <Footer />
     </Fragment>
   )
 }
 
-function Header({ siteTitle }: { siteTitle: string }): React.ReactElement {
+function Header({
+  lang,
+  siteTitle,
+}: {
+  lang: "fr" | "en"
+  siteTitle: string
+}): React.ReactElement {
   return (
-    <header>
-      <div
-        css={css`
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-        `}
-      >
-        <h1>{siteTitle}</h1>
-        <h3>{"🔭🎶🕺"}</h3>
-      </div>
+    <header
+      css={css`
+        display: grid;
+        grid-template: "a b" "c c";
+        justify-content: space-between;
+      `}
+    >
+      <h1>
+        {siteTitle} {lang === "fr" ? "🇫🇷" : "🇬🇧"}
+      </h1>
+      <h3>{"🔭🎶🕺"}</h3>
       <nav>
-        <Link to="/">Blog</Link>
+        <Link to={`/${lang}`}>Blog</Link>
         {" / "}
-        <Link to="/about">About</Link>
+        <Link to="/about">{lang === "fr" ? "À propos" : "About"}</Link>
         {" / "}
         <a href="/rss.xml">RSS</a>
+        {" / "}
+        <Link to={lang === "fr" ? "/en" : "/fr"}>
+          {lang !== "fr" ? "🇫🇷" : "🇬🇧"}
+        </Link>
       </nav>
     </header>
   )

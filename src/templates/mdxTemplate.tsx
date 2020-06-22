@@ -7,10 +7,10 @@ import Layout from "~/components/layout"
 import SEO from "~/components/seo"
 import { css, jsx } from "~/theme"
 
-export default function Template({ data }): React.ReactNode {
+export default function Template({ data, location }): React.ReactNode {
   const { body, fields, frontmatter, tableOfContents } = data.mdx
   return (
-    <Layout>
+    <Layout lang={location.pathname.match(/^\/fr/) ? "fr" : "en"}>
       <SEO title={frontmatter.title} />
       <article itemType="http://schema.org/BlogPosting">
         <h1>{frontmatter.title}</h1>
