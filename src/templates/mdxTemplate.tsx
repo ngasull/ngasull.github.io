@@ -28,25 +28,26 @@ export default function Template({ data, location }): React.ReactNode {
               <details open>
                 <summary>Table of contents</summary>
                 <ul>
-                  {tableOfContents.items.map(({ url, title, items }) => (
-                    <li key={url}>
-                      <a href={url} key={url}>
-                        {title}
-                      </a>
+                  {tableOfContents.items &&
+                    tableOfContents.items.map(({ url, title, items }) => (
+                      <li key={url}>
+                        <a href={url} key={url}>
+                          {title}
+                        </a>
 
-                      {items && items.length > 0 && (
-                        <ul>
-                          {items.map(({ url, title }) => (
-                            <li key={url}>
-                              <a href={url} key={url}>
-                                {title}
-                              </a>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </li>
-                  ))}
+                        {items && items.length > 0 && (
+                          <ul>
+                            {items.map(({ url, title }) => (
+                              <li key={url}>
+                                <a href={url} key={url}>
+                                  {title}
+                                </a>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </li>
+                    ))}
                 </ul>
               </details>
             }
