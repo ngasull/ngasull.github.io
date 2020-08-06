@@ -9,8 +9,9 @@ import { css, jsx } from "~/theme"
 
 export default function Template({ data, location }): React.ReactNode {
   const { body, fields, frontmatter, tableOfContents } = data.mdx
+  const lang = location.pathname.match(/^\/fr/) ? "fr" : "en"
   return (
-    <Layout lang={location.pathname.match(/^\/fr/) ? "fr" : "en"}>
+    <Layout lang={lang}>
       <SEO title={frontmatter.title} />
       <article itemType="http://schema.org/BlogPosting">
         <h1>{frontmatter.title}</h1>
@@ -19,14 +20,16 @@ export default function Template({ data, location }): React.ReactNode {
             margin-bottom: 2rem;
           `}
         >
-          {fields.date}
+          {lang === "fr" ? fields.dateFr : fields.dateEn}
         </h6>
 
         <div itemProp="articleBody">
           <MDXRenderer
             toc={
               <details open>
-                <summary>Table of contents</summary>
+                <summary>
+                  {lang === "fr" ? "Table des matières" : "Table of contents"}
+                </summary>
                 <ul>
                   {tableOfContents.items &&
                     tableOfContents.items.map(({ url, title, items }) => (
@@ -64,7 +67,8 @@ export const query = graphql`
   query PostBySlug($slug: String!) {
     mdx(fields: { slug: { eq: $slug } }) {
       fields {
-        date(formatString: "MMMM DD, YYYY")
+        dateEn: date(formatString: "MMMM DD, YYYY", locale: "en")
+        dateFr: date(formatString: "D MMMM YYYY", locale: "fr")
       }
       frontmatter {
         title
