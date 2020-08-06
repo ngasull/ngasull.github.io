@@ -5,7 +5,7 @@ categories: devops
 
 <>{props.toc}</>
 
-## Pour travailler ensmble
+## Pour travailler ensemble
 Tout le monde développe sur différentes machines. Il n'est pas rare que plusieurs collègues aient installé différentes version d'une même library, d'un package manager, du runtime de leur application... (cc node/npm 👋)
 
 Lorsque l'application de développement est dockerisée, tous les devs (et la prod !) sont soumis aux mêmes règles, ce qui évite le syndrôme de _"mais ça marche sur mon PC"_ tout en réduisant la configuration nécessaire à installer l'environnement de dev. Voir juste après !
@@ -13,7 +13,7 @@ Lorsque l'application de développement est dockerisée, tous les devs (et la pr
 ## Pour moins perdre de temps à configurer
 La configuration, c'est du temps passé à ne pas être productif. Plus il y a d'environnements dans lesquels une application doit tourner, plus il y a de configuration à faire. Docker permet d'abstraire l'environnement dans lequel tourne l'application et donc de ne faire que le minimum nécessaire.
 
-Une conséquence notable: pour ajouter un service à la stack, plus forcément besoin d'apprendre en détails une technologie. Il suffit d'ajouter une image existante de celle-ci, et de simplement spécifier les variables d'environnement nécessaire. Par exemple, pour [ajouter une database PostgreSQL](https://hub.docker.com/_/postgres/), il suffit au minimum de renseigner un root password et de monter un volume pour persister les données.
+Une conséquence notable: pour ajouter un service à la stack, plus forcément besoin d'apprendre en détails une technologie. Il suffit d'ajouter une image existante de celle-ci, et de simplement spécifier les variables d'environnement nécessaires. Par exemple, pour [ajouter une database PostgreSQL](https://hub.docker.com/_/postgres/), il suffit au minimum de renseigner un root password et de monter un volume pour persister les données.
 
 ## Pour séparer les problèmes
 Comme chaque service est aussi simple que possible, chacun n'a que très peu de dépendances avec le reste du monde. On voit que, par nature, les conteneurs nous poussent à n'avoir que le minimum vital de dépendances entre services.
@@ -29,8 +29,9 @@ Car oui: c'est vite fait de faire fuiter le port d'une database, et [quand elle 
 
 L'idée est de penser un service comme une boîte noire qui expose un ou plusieurs ports. Les services communiquent entre eux grâce aux volumes montés en commun ou à travers des ports internes. En effet, les [services appartenant à un même réseau](https://docs.docker.com/compose/networking/) peuvent par défaut s'accéder entre eux.
 
+
 ## Pièges et trucs à savoir
-Sous Windows et Mac, les conteneurs tournent sur une VM. Du coup c'est lent, pas natif et les lectures/écritures disque peuvent ralentir l'édition de fichiers. La solution est simple: utilisez Linux 😏 (si tu as une vraie solution, je serais ravi que tu nous la partages 🙏)
+Sous Windows et Mac, les conteneurs tournent sur une VM. Du coup c'est lent, pas natif et les lectures/écritures disque peuvent ralentir l'édition de fichiers. La solution est simple: utilise Linux 😏 (ou un Windows/Mac puissant)
 
 Lorsqu'un même volume (dossier) est monté et écriture dans deux conteneurs à la fois, on peut se retrouver avec des comportements inattendus: chez moi, l'intégralité du dossier généré par un run de build disparaissait en même temps que le conteneur à la fin du run. Je recommande donc vivement de ne monter en écriture qu'un seul fichier ou dossier à la fois.
 
@@ -47,4 +48,60 @@ webapp:
     - ./code/dist:/code/dist
 ```
 
-Enfin, la gestion des permissions déroutante au début. Voir mon prochain article pour mieux comprendre pourquoi et comment bien gérer ses permissions.
+Les images Docker peuvent vite prendre de l'espace disque. Mais avec le temps, la communauté opte de plus en plus pour des versions minimalistes de chaque image. Autrefois avec une version _slim_ de Debian, et aujourd'hui souvent avec une version [Alpine Linux](https://alpinelinux.org/about/) qui permet aux images de faire moins de 10Mo de base ! Préfère-donc utiliser les tags `-alpine` de chaque image.
+
+Enfin, la gestion des permissions est déroutante au début. Docker tourne en root par défaut et a de bonnes raisons de le faire: autant dire que j'apprécie de pouvoir ouvrir les ports 80 ou 443 en dev comme en prod 🙂
+
+Pour mieux comprendre pourquoi et comment bien gérer ses permissions: voir mon prochain article.
+
+
+## Par où commencer?
+
+En prenant le temps de lire la doc dans l'ordre, tout ne peut que bien se passer :
+
+1. [Comprends Docker](https://docs.docker.com/get-started/overview/)
+2. [Comprends docker-compose](https://docs.docker.com/compose/) pour simplement faire cohabiter les services entre eux
+3. Installe [docker](https://docs.docker.com/engine/install/) et [docker-compose](https://docs.docker.com/compose/install/)
+4. [Ajoute ton user au groupe `docker`](https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user) pour piloter le daemon sans `sudo`
+5. C'est parti ! N'oublie pas de garder la configuration la plus simple possible.
+
+<details open={false}>
+<summary>Exemple</summary>
+
+Une stack complète React/Rust/PostgreSQL pourrait être lancée avec la simple config suivante à la racine d'un projet :
+```yml
+version: "3"
+services:
+  db:
+    image: postgres:alpine
+    environment:
+      - POSTGRES_PASSWORD=yolo
+    volumes:
+      - ./db/data:/var/lib/postgresql/data
+  backend:
+    image: rust:slim
+    environment:
+      - PGHOST=db
+      - PGDATABASE=monservice
+      - PGUSER=root
+      - PGPASSWORD=yolo
+    volumes:
+      - ./backend/:/home/backend
+      - ./webapp/:/home/webapp:ro
+    command: cargo run
+    ports:
+      - 4000:4000
+  webapp:
+    image: node:alpine
+    environment:
+      - YARN_VERSION=1.22
+      - BACKEND_URL=http://backend:4000/
+    volumes:
+      - ./webapp/:/home/webapp
+    command: sh -c "yarn install && CI=true yarn start"
+    ports:
+      - 80:8080
+```
+
+`docker-compose up -d` et c'est parti directement sur [localhost](http://localhost) ! 💻
+</details>
