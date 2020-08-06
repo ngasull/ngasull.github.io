@@ -31,31 +31,31 @@ export default function Layout({
 
   return (
     <Fragment>
-      <Header lang={lang} siteTitle={data.site.siteMetadata.title} />
+      <Header lang={lang} />
       <main aria-label="Content">{children}</main>
-      <Footer />
+      <Footer lang={lang} />
     </Fragment>
   )
 }
 
-function Header({
-  lang,
-  siteTitle,
-}: {
-  lang: "fr" | "en"
-  siteTitle: string
-}): React.ReactElement {
+function Header({ lang }: { lang: "fr" | "en" }): React.ReactElement {
   return (
     <header
       css={css`
         display: grid;
         grid-template: "a b" "c c";
         justify-content: space-between;
+
+        @media (max-width: 750px) {
+          grid-template: "a" "b" "c";
+
+          & h3 {
+            padding: 0.5rem 0;
+          }
+        }
       `}
     >
-      <h1>
-        {siteTitle} {lang === "fr" ? "🇫🇷" : "🇬🇧"}
-      </h1>
+      <h1>{lang === "fr" ? "Le labo de Nico" : "Nico's lab"}</h1>
       <h3>{"🔭🎶🕺"}</h3>
       <nav>
         <Link to={`/${lang}`}>Blog</Link>
@@ -72,7 +72,7 @@ function Header({
   )
 }
 
-export function Footer(): React.ReactElement {
+export function Footer({ lang }: { lang: "fr" | "en" }): React.ReactElement {
   return (
     <footer
       css={css`
@@ -80,7 +80,9 @@ export function Footer(): React.ReactElement {
       `}
     >
       <p>
-        <Link to="/">Go to articles 👀</Link>
+        <Link to="/">
+          {lang === "fr" ? "Retour aux articles  👀" : "Go to articles 👀"}
+        </Link>
       </p>
 
       <p>
