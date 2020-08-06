@@ -14,9 +14,11 @@ import { css, jsx } from "~/theme"
 
 export default function Layout({
   children,
+  hideBack,
   lang,
 }: {
   children: React.ReactNode
+  hideBack?: boolean
   lang: "fr" | "en"
 }): React.ReactElement {
   const data = useStaticQuery(graphql`
@@ -33,7 +35,7 @@ export default function Layout({
     <Fragment>
       <Header lang={lang} />
       <main aria-label="Content">{children}</main>
-      <Footer lang={lang} />
+      <Footer hideBack={hideBack} lang={lang} />
     </Fragment>
   )
 }
@@ -72,18 +74,26 @@ function Header({ lang }: { lang: "fr" | "en" }): React.ReactElement {
   )
 }
 
-export function Footer({ lang }: { lang: "fr" | "en" }): React.ReactElement {
+export function Footer({
+  hideBack,
+  lang,
+}: {
+  hideBack?: boolean
+  lang: "fr" | "en"
+}): React.ReactElement {
   return (
     <footer
       css={css`
         text-align: center;
       `}
     >
-      <p>
-        <Link to={"/" + lang}>
-          {lang === "fr" ? "Retour aux articles  👀" : "Go to articles 👀"}
-        </Link>
-      </p>
+      {!hideBack && (
+        <p>
+          <Link to={`/${lang}/`}>
+            {lang === "fr" ? "Retour aux articles  👀" : "Go to articles 👀"}
+          </Link>
+        </p>
+      )}
 
       <p>
         Copyright © 2019

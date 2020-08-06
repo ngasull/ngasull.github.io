@@ -9,9 +9,9 @@ const Posts: React.FC<{
   title: string
   data: any
   location: any
-}> = ({ data, location, title }) => {
+}> = ({ data, lang, location, title }) => {
   return (
-    <Layout lang={location.pathname.match(/^\/fr/) ? "fr" : "en"}>
+    <Layout hideBack lang={lang}>
       <SEO title={title} />
       <h1>{title}</h1>
 
