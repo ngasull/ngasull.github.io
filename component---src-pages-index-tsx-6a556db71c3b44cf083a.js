@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[6],{QeBL:function(e,t,n){"use strict";n.r(t);var r=n("q1tI"),a=n.n(r),c=n("H8eV");t.default=function(){return a.a.createElement(c.a,{title:"Redirect to new route"},a.a.createElement("meta",{httpEquiv:"refresh",content:"0;url=/fr/"}),a.a.createElement("link",{rel:"canonical",href:"/fr/"}))}}}]);
+//# sourceMappingURL=component---src-pages-index-tsx-6a556db71c3b44cf083a.js.map

@@ -1,0 +1,1 @@
+{"componentChunkName":"component---src-pages-posts-tsx","path":"/Posts/","result":{"errors":[{"message":"Variable \"$lang\" of required type \"String!\" was not provided.","locations":[{"line":1,"column":18}]}],"pageContext":{}}}
