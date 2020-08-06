@@ -13,6 +13,8 @@ Lorsque l'application de développement est dockerisée, tous les devs (et la pr
 ## Pour moins perdre de temps à configurer
 La configration, c'est du temps passé à ne pas être productif. Plus une application doit être capable de tourner dans différents environnements, plus de configuration doit être faite. Docker permet d'abstraire l'environnement dans lequel tourne l'application et donc de ne faire que le minimum nécessaire.
 
+Une conséquence notable: pour ajouter un service à la stack, plus forcément besoin d'apprendre en détails une technologie. Il suffit d'ajouter une image existante de celle-ci, et de simplement spécifier les variables d'environnement nécessaire. Par exemple, pour [ajouter une database PostgreSQL](https://hub.docker.com/_/postgres/), il suffit au minimum de renseigner un root password et de monter un volume pour persister les données.
+
 ## Pour séparer les problèmes
 Comme chaque service est aussi simple que possible, chacun n'a que très peu de dépendances avec le reste du monde. On voit que, par nature, les conteneurs nous poussent à n'avoir que le minimum vital de dépendances entre services.
 
