@@ -80,7 +80,7 @@ export function Footer({ lang }: { lang: "fr" | "en" }): React.ReactElement {
       `}
     >
       <p>
-        <Link to="/">
+        <Link to={"/" + lang}>
           {lang === "fr" ? "Retour aux articles  👀" : "Go to articles 👀"}
         </Link>
       </p>
