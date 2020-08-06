@@ -2,8 +2,8 @@ import React from "react"
 import SEO from "~/components/seo"
 
 const IndexPage: React.FC = () => {
-  const lang = navigator.language.includes("fr") ? "fr" : "en"
-  const rootUri = `/${lang}/`
+  //const lang = navigator.language.includes("fr") ? "fr" : "en"
+  const rootUri = `/fr/`
   return (
     <SEO title="Redirect to new route">
       <meta httpEquiv="refresh" content={`0;url=${rootUri}`} />
