@@ -1,0 +1,48 @@
+---
+title:  "Pourquoi Docker ?"
+categories: devops
+---
+
+<>{props.toc}</>
+
+## Pour travailler ensmble
+Tout le monde développe sur différentes machines. Il n'est pas rare que plusieurs collègues aient installé différentes version d'une même library, d'un package manager, du runtime de leur application... (cc node/npm 👋)
+
+Lorsque l'application de développement est dockerisée, tous les devs (et la prod !) sont soumis aux mêmes règles, ce qui évite le syndrôme de _"mais ça marche sur mon PC"_ tout en réduisant la configuration nécessaire à installer l'environnement de dev. Voir juste après !
+
+## Pour moins perdre de temps à configurer
+La configration, c'est du temps passé à ne pas être productif. Plus une application doit être capable de tourner dans différents environnements, plus de configuration doit être faite. Docker permet d'abstraire l'environnement dans lequel tourne l'application et donc de ne faire que le minimum nécessaire.
+
+## Pour séparer les problèmes
+Comme chaque service est aussi simple que possible, chacun n'a que très peu de dépendances avec le reste du monde. On voit que, par nature, les conteneurs nous poussent à n'avoir que le minimum vital de dépendances entre services.
+
+Par dépendances, je pense en particulier à:
+- Système, programmes, libraries installés
+- Configurations associées à ce setup
+- Volumes (fichiers)
+- Accès réseau
+
+## Pour gérer et sécuriser les connexions réseau
+Car oui: c'est vite fait de faire fuiter le port d'une database, et [quand elle n'est pas séurisée c'est gênant](https://www.bleepingcomputer.com/news/security/new-meow-attack-has-deleted-almost-4-000-unsecured-databases/) 😬
+
+L'idée est de penser un service comme une boíte noire qui expose un ou plusieurs ports. Les services communiquent entre eux grâce aux volumes montés en commun ou à travers des ports internes. En effet, les [services appartenant à un même réseau](https://docs.docker.com/compose/networking/) peuvent par défaut s'accéder entre eux.
+
+## Pièges et trucs à savoir
+Sous Windows et Mac, les conteneurs tournent sur une VM. Du coup c'est lent, pas natif et les lectures/écritures disque peuvent ralentir l'édition de fichiers. La solution est simple: utilisez Linux 😏 (si avez une vraie solution, je serais ravi que vous la nous la partagiez 🙏)
+
+Lorsqu'un même volume (dossier) est monté et écriture dans deux conteneurs à la fois, on peut se retrouver avec des comportements inattendus: chez moi, l'intégralité du dossier généré par un run de build disparaissait en même temps que le conteneur qui assurait le build. Je recommande donc vivement de ne monter en écriture qu'une seule arborescence à la fois.
+
+C'est possible de ne partager en écriture qu'une partie d'une même arborescence commune. Par exemple, si `backend` et `frontend` partagent `code` en lecture mais que `backend` doit écrire dans `code/target` et `frontend` doit écrire dans `code/dist`, alors les volumes peuvent être surchargés comme ceci:
+```yml
+backend:
+  volumes:
+    - ./code:code:ro
+    - ./code/target:/code/target
+
+webapp:
+  volumes:
+    - ./code:code:ro
+    - ./code/dist:/code/dist
+```
+
+Enfin, la gestion des permissions déroutante au début. Voir mon prochain article pour mieux comprendre pourquoi et comment bien gérer ses permissions.
