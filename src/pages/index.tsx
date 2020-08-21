@@ -1,15 +1,13 @@
-import React from "react"
+import React, { useEffect } from "react"
 import SEO from "~/components/seo"
+import { navigate } from "gatsby"
 
 const IndexPage: React.FC = () => {
-  //const lang = navigator.language.includes("fr") ? "fr" : "en"
-  const rootUri = `/fr/`
-  return (
-    <SEO title="Redirect to new route">
-      <meta httpEquiv="refresh" content={`0;url=${rootUri}`} />
-      <link rel="canonical" href={rootUri} />
-    </SEO>
-  )
+  useEffect(() => {
+    const lang = navigator.language.includes("fr") ? "fr" : "en"
+    navigate(`/${lang}/`, { replace: true })
+  })
+  return <SEO title="Le labo de Nico" />
 }
 
 export default IndexPage
