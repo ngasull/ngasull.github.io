@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[6],{QeBL:function(e,n,t){"use strict";t.r(n);t("Z2Ku"),t("L9s1");var a=t("q1tI"),c=t.n(a),r=t("H8eV"),u=t("Wbzz");n.default=function(){return Object(a.useEffect)((function(){var e=navigator.language.includes("fr")?"fr":"en";Object(u.b)("/"+e+"/",{replace:!0})})),c.a.createElement(r.a,{title:"Le labo de Nico"})}}}]);
+//# sourceMappingURL=component---src-pages-index-tsx-f88c9f0f7cf97cdc7c05.js.map
