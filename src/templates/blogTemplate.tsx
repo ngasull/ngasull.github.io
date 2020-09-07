@@ -8,8 +8,9 @@ import { css, jsx } from "~/theme"
 export default function Template({ data }): React.ReactElement {
   const { markdownRemark } = data
   const { frontmatter, html } = markdownRemark
+  const lang = location.pathname.match(/^\/fr/) ? "fr" : "en"
   return (
-    <Layout>
+    <Layout lang={lang}>
       <h1>{frontmatter.title}</h1>
       <h6
         css={css`

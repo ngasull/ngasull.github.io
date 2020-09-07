@@ -62,7 +62,9 @@ function Header({ lang }: { lang: "fr" | "en" }): React.ReactElement {
       <nav>
         <Link to={`/${lang}`}>Blog</Link>
         {" / "}
-        <Link to="/about">{lang === "fr" ? "À propos" : "About"}</Link>
+        <Link to={`/${lang}/about`}>
+          {lang === "fr" ? "À propos" : "About"}
+        </Link>
         {" / "}
         <a href="/rss.xml">RSS</a>
         {" / "}
@@ -121,7 +123,7 @@ export function Footer({
         <a href="https://www.linkedin.com/in/nicolasgasull">
           <SocialIcon icon="linkedin" />
         </a>
-        <Link to="/about">
+        <Link to={`/${lang}/about`}>
           <SocialIcon icon="at" />
         </Link>
         <a href="/rss.xml">

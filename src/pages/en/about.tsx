@@ -1,10 +1,10 @@
 import React from "react"
 
-import Layout from "../components/layout"
-import SEO from "../components/seo"
+import Layout from "../../components/layout"
+import SEO from "../../components/seo"
 
 const AboutPage = () => (
-  <Layout>
+  <Layout lang="en">
     <SEO title="About" />
 
     <p>Hi 👋 I am Nicolas Gasull.</p>

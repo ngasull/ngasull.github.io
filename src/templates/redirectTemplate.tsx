@@ -22,13 +22,6 @@ export const query = graphql`
       fields {
         path
       }
-      frontmatter {
-        title
-      }
-      body
-      excerpt
-      tableOfContents
-      timeToRead
     }
   }
 `
