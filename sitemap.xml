@@ -3,10 +3,12 @@
 <url> <loc>https://nicolas.gasull.net/en/blog/simply-efficiently-use-vim-multiple-files</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://nicolas.gasull.net/simply-efficiently-use-vim-multiple-files</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://nicolas.gasull.net/fr/blog/pourquoi-docker</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://nicolas.gasull.net/fr/blog/gerer-ses-permissions-avec-docker</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://nicolas.gasull.net/en/blog/making-music-programmable-again</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://nicolas.gasull.net/making-music-programmable-again</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
-<url> <loc>https://nicolas.gasull.net/about/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://nicolas.gasull.net/en/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://nicolas.gasull.net/en/about/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://nicolas.gasull.net/fr/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://nicolas.gasull.net/fr/about/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://nicolas.gasull.net/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 </urlset>
