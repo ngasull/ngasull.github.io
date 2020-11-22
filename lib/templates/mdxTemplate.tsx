@@ -1,11 +1,9 @@
 /** @jsx jsx */
 
-import { graphql } from "gatsby"
-import { MDXRenderer } from "gatsby-plugin-mdx"
 import React from "react"
-import Layout from "~/components/layout"
-import SEO from "~/components/seo"
-import { css, jsx } from "~/theme"
+import Layout from "lib/components/layout"
+import SEO from "lib/components/seo"
+import { css, jsx } from "lib/theme"
 
 export default function Template({ data, location }): React.ReactNode {
   const { body, fields, frontmatter, tableOfContents } = data.mdx
