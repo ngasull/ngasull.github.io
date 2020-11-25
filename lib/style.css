@@ -14,19 +14,19 @@
     --nc-lk-1: theme("colors.indigo.500");
     --nc-lk-2: theme("colors.indigo.600");
     --nc-lk-tx: #fff;
-    --nc-ac-1: #79ffe1;
-    --nc-ac-tx: #0c4047;
+    --nc-ac-1: theme("colors.indigo.600");
+    --nc-ac-tx: theme("colors.gray.300");
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --nc-tx-1: #fff;
-      --nc-tx-2: theme("colors.gray.200");
+      --nc-tx-1: theme("colors.gray.100");
+      --nc-tx-2: theme("colors.gray.300");
       --nc-bg-1: #000;
       --nc-bg-2: theme("colors.gray.900");
       --nc-bg-3: theme("colors.gray.800");
       --nc-lk-1: theme("colors.indigo.400");
       --nc-lk-2: theme("colors.indigo.300");
-      --nc-ac-1: #7928ca;
+      --nc-ac-1: theme("colors.indigo.800");
       --nc-ac-tx: #fff;
     }
   }
@@ -129,6 +129,7 @@
   }
   a {
     color: var(--nc-lk-1);
+    text-decoration: none;
   }
   a:hover {
     color: var(--nc-lk-2);
@@ -205,6 +206,7 @@
   kbd,
   pre,
   samp {
+    color: var(--nc-tx-2);
     font-family: var(--nc-font-mono);
   }
   code,
@@ -214,7 +216,7 @@
     background: var(--nc-bg-2);
     border: 1px solid var(--nc-bg-3);
     border-radius: theme("borderRadius.default");
-    padding: theme("spacing.1") theme("spacing.6");
+    padding: theme("spacing.px") theme("spacing.1");
     font-size: theme("fontSize.sm");
   }
   kbd {
@@ -309,7 +311,7 @@
     padding-left: theme("spacing.8");
   }
   li {
-    margin-top: theme("spacing.1");
+    margin-top: theme("spacing.2");
   }
   ol ol,
   ol ul,
@@ -338,12 +340,6 @@
   }
 
   /* End of modified new.css */
-
-  html,
-  body,
-  #__next {
-    height: 100%;
-  }
 
   svg {
     display: inline-block;
@@ -408,6 +404,8 @@
   .anchor {
     fill: var(--nc-tx-2);
     margin-left: 1rem;
+    width: 16px;
+    height: 16px;
   }
   @media (pointer: fine) {
     .anchor {
