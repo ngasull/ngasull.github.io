@@ -1,27 +1,12 @@
-import { Layout } from "lib/components/Layout"
-import Head from "next/head"
+import BlogLayout from "./blog"
+import PlainLayout from "./plain"
 
-const BlogLayout: React.FC = ({ children, frontMatter }) => {
-  const dateMatch = frontMatter.__resourcePath.match(
-    /\/(\d{4}-\d\d-\d\d)-(fr|en)-(.+)$/
-  )
-  return (
-    <Layout>
-      <Head>
-        <title>{frontMatter.title}</title>
-      </Head>
-      <h1>{frontMatter.title}</h1>
-
-      <h6 className="pb-8">
-        {new Date(dateMatch[1]).toLocaleDateString(dateMatch[2], {
-          day: "numeric",
-          month: "long",
-          year: "numeric",
-        })}
-      </h6>
-      {children}
-    </Layout>
-  )
+const DefaultLayout: React.FC = (props) => {
+  const { frontMatter } = props
+  const layoutMatch = frontMatter.__resourcePath.match(/\.(\w+)\.mdx$/)
+  const Layout =
+    layoutMatch && layoutMatch[1] === "blog" ? BlogLayout : PlainLayout
+  return <Layout {...props} />
 }
 
-export default BlogLayout
+export default DefaultLayout

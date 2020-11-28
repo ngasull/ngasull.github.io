@@ -1,10 +1,17 @@
 import SocialIcon from "lib/components/SocialIcon"
 import { useRouter } from "next/dist/client/router"
+import Head from "next/head"
 import Link from "next/link"
 
-export const Layout: React.FC = ({ children }) => {
+export const Layout: React.FC<{ children: React.ReactNode; title: string }> = ({
+  children,
+  title,
+}) => {
   return (
     <>
+      <Head>
+        <title>{`${title} - Nico's Lab`}</title>
+      </Head>
       <Header />
       <main aria-label="Content">{children}</main>
       <Footer />
@@ -12,13 +19,13 @@ export const Layout: React.FC = ({ children }) => {
   )
 }
 
-function Header(): React.ReactElement {
+const Header: React.FC = () => {
   const router = useRouter()
   const lang = router.locale
   return (
-    <header>
+    <header className="ng-header">
       <h1>{lang === "fr" ? "Le labo de Nico" : "Nico's lab"}</h1>
-      <h3>{"🔭🎶🕺"}</h3>
+      <h3 className="py-2 md:p-0">{"🔭🎶🕺"}</h3>
       <nav>
         <Link href="/">Blog</Link>
         {" / "}
@@ -30,22 +37,6 @@ function Header(): React.ReactElement {
           {lang !== "fr" ? "🇫🇷" : "🇬🇧"}
         </Link>
       </nav>
-      <style jsx>{`
-        header {
-          display: grid;
-          grid-template: "a b" "c c";
-          justify-content: space-between;
-        }
-
-        @media (max-width: 750px) {
-          header {
-            grid-template: "a" "b" "c";
-          }
-          header h3 {
-            padding: 0.5rem 0;
-          }
-        }
-      `}</style>
     </header>
   )
 }
