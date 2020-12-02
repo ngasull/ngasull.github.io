@@ -9,8 +9,8 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
       articles: await Promise.all(
         (await getArticles())
           .filter((a) => a.lang === locale)
-          .map(async (article) => {
-            const { scope } = await processRemote(article)
+          .map(async ({ filepath, ...meta }) => {
+            const { scope } = await processRemote(filepath, meta)
             return scope
           })
       ),

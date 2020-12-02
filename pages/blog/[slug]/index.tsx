@@ -10,8 +10,10 @@ export const getStaticProps: GetStaticProps = async ({
   const article = (await getArticles()).find(
     (a) => a.slug === slug && a.lang === locale
   )
+  console.log(article)
   if (!article) return { notFound: true }
-  const { staticSource, scope } = await processRemote(article)
+  const { filepath, ...meta } = article
+  const { staticSource, scope } = await processRemote(filepath, meta)
   return {
     props: {
       scope,
@@ -22,7 +24,8 @@ export const getStaticProps: GetStaticProps = async ({
 
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
-    paths: (await getArticles()).map(({ slug }) => ({
+    paths: (await getArticles()).map(({ lang, slug }) => ({
+      locale: lang,
       params: { slug },
     })),
     fallback: false,

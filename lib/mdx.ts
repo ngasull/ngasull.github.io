@@ -9,7 +9,7 @@ import slug from "remark-slug"
 import visit from "unist-util-visit"
 
 type Article = {
-  file: Buffer
+  filepath: string
   date: string
   lang: string
   slug: string
@@ -17,19 +17,18 @@ type Article = {
 
 export const getArticles = async (): Promise<Article[]> => {
   const readdir = util.promisify(fs.readdir)
-  const readFile = util.promisify(fs.readFile)
   return (
     await Promise.all(
       (await readdir(path.resolve("lib/posts"))).map(
         async (filename: string) => {
           const postMatch = filename.match(
-            /^(\d{4}-\d\d-\d\d)-(fr|en)-([^/]+).blog.mdx$/
+            /^(\d{4}-\d\d-\d\d)-(fr|en)-([^/]+).mdx$/
           )
           if (!postMatch)
             throw new Error(`Pas de la forme blog post: ${filename}`)
           const [, date, lang, slug] = postMatch
           return {
-            file: await readFile(path.join("lib/posts", filename)),
+            filepath: path.join("lib/posts", filename),
             date,
             lang,
             slug,
@@ -40,7 +39,12 @@ export const getArticles = async (): Promise<Article[]> => {
   ).filter(Boolean)
 }
 
-export async function processRemote({ file, ...meta }: Article) {
+export async function processRemote(
+  filepath: string,
+  meta: Record<string, unknown>
+) {
+  const readFile = util.promisify(fs.readFile)
+  const file = await readFile(filepath)
   const { content, data } = matter(file)
   const scope = { ...meta, ...data }
   await renderToString(content, {
