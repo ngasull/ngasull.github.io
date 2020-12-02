@@ -53,6 +53,7 @@ module.exports = {
           2,
           { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
         ],
+        "@typescript-eslint/no-var-requires": "off",
       },
     },
   ],

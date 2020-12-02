@@ -1,4 +1,4 @@
-import SocialIcon from "lib/components/SocialIcon"
+import SocialIcon from "lib/SocialIcon"
 import { useRouter } from "next/dist/client/router"
 import Head from "next/head"
 import Link from "next/link"
@@ -10,7 +10,7 @@ export const Layout: React.FC<{ children: React.ReactNode; title: string }> = ({
   return (
     <>
       <Head>
-        <title>{`${title} - Nico's Lab`}</title>
+        <title>{`${title} | Nico's Lab`}</title>
       </Head>
       <Header />
       <main aria-label="Content">{children}</main>

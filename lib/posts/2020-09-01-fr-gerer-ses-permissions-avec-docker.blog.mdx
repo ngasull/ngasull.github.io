@@ -1,11 +1,12 @@
 ---
 title:  "Gérer ses permissions avec Docker"
-categories: devops
+categories:
+  - devops
 ---
 
 <>{props.toc}</>
 
-## Vocabulaire
+# Vocabulaire
 
 Tout d'abord soyons d'accord sur les mots :
 - L'**_hôte_** est le système d'exploitation de la machine, celui qui fait tourner Docker lui-même
@@ -15,7 +16,7 @@ Tout d'abord soyons d'accord sur les mots :
 L'article décrit comment utiliser les user namespaces (_subuids_) dans un environnement Unix pour réserver une plage d'utilisateurs au daemon Docker. Il est probable que Docker for Mac supporte cette fonctionnalité.
 
 
-## Motivation
+# Motivation
 
 Sur l'hôte, sans configuration donnée, les fichiers manipulés par Docker appartiennent au même utilisateur que celui du conteneur. Ce n'est pas rassurant dans le sens où le daemon Docker tourne en `root` par défaut et que les conteneurs ne sont pas tenus de s'exécuter en tant que l'utilisateur qui leur a été donné en configuration.
 
@@ -24,7 +25,7 @@ _Exemple : les images `postgres` et `mysql` écrivent d'elles-mêmes une partie 
 Pour éviter ce problème, nous allons indiquer au daemon Docker à quels utilisateurs hôte correspondent tous les utilisateurs des conteneurs.
 
 
-## Mise en place
+# Mise en place
 
 <h5 no-toc>Configuration hôte impactée :</h5>
 
@@ -34,7 +35,7 @@ Pour éviter ce problème, nous allons indiquer au daemon Docker à quels utilis
 
 Selon moi, c'est avantageux de configurer différemment ces mappings sur les machines des développeurs et en CI/production. En effet : autant tirer profit de cette flexibilité pour développer confortablement tout en gardant la production sous contrôle.
 
-### Mappings de dev
+## Mappings de dev
 
 En mappant le `root` des conteneurs vers ton utilisateur hôte, tu peux simplement profiter d'une transparence de permissions par défaut. Plus de problèmes avec les volumes générés en `root` hôte puis crashant l'exécution à cause de la mauvaise permission !
 
@@ -78,14 +79,14 @@ N'oublie pas de redémarrer le daemon docker pour que cela prenne effet 😉
 sudo service docker restart
 ```
 
-### Mappings de CI/production
+## Mappings de CI/production
 
 En production, la configuration dépend davantage des permissions que tu veux donner à tes conteneurs. On est davantage sur des problématiques de sécurité que de praticité.
 
 Il est possible d'appliquer le même type de configuration que précédemment à condition de bien connaître les conséquences du mapping, en particulier pour l'utilisateur 0.
 
 
-## Problèmes et trucs à savoir
+# Problèmes et trucs à savoir
 
 Il est possible de mapper plusieurs utilisateurs spécifiques conteneur vers des utilisateurs spécifiques hôte. Par exemple :
 

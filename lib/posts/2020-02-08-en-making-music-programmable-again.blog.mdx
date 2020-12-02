@@ -2,7 +2,9 @@
 path: /en/blog/making-music-programmable-again
 date:   2020-02-08
 title:  "Making music programmable again"
-categories: music gamedev
+categories:
+  - music
+  - gamedev
 ---
 
 import fasttracker2Uri from "~/assets/img/FastTracker2.png"
@@ -17,7 +19,7 @@ how game music composition evolved over the years,
 and eventually opens some doors to new creative horizons.
 
 
-## Game music in the 90's
+# Game music in the 90's
 
 Retro games used to synthesize sound on-the-go by the device's sound chip or card. This is why retro game music is often referred as **chiptune**.
 Many artists [still compose chiptune nowadays](http://battleofthebits.org/) - maybe because nostalgia, or maybe because chiptune focuses on composition rather than picking and tweaking instruments, effects and mastering.
@@ -62,7 +64,7 @@ While I love the _module_ format, there are still issues:
 Because of these, I don't see any significant advantage in using module files in video games. Instead, there must be some sort of standard in order to separate instruments from music...
 
 
-## Modern music composition
+# Modern music composition
 
 Modern video game music seems to have converged with regular "song" music along with the evolution of DAWs.
 Most games embed compressed raw audio data and it makes sense for most game dev studios that have a dedicated musicians.
@@ -78,7 +80,7 @@ There is a standard for having instruments communicate together and with compute
 MIDI is the standard abstraction layer for digital music. Signals can be realtime or can be stored in a _.mid_ file (called _Standard MIDI File_ or **SMF**). This gives us strong hopes for programmatic music! Provided a sound synthesis library, lightweight signals can become music.
 
 
-### Synthesis from MIDI
+## Synthesis from MIDI
 
 MIDI now looks like an obvious choice for standard programmatic music.
 However I had a hard time finding how to actually play it back from a game.
@@ -99,7 +101,7 @@ A consequence of this is how hard it is to leverage the whole capabilities of Fl
 Moreover, even if **MIDI+Soundfont** looks like a "standard" combo, I don't know any good DAW that allows both MIDI composing and SoundFont creation/edition at the same time.
 
 
-## Dynamic music synthesis in 2020?
+# Dynamic music synthesis in 2020?
 
 Now we reach the point of many wonders. It seems like great music technologies from the 90's still exist but haven't reached their full potential.
 This didn't prevent music itself to evolve, but what about the way music is used interactively?

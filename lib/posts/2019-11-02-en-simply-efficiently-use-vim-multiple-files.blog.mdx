@@ -1,6 +1,7 @@
 ---
 title: How to simply use vim across multiple files
-categories: dev
+categories:
+  - dev
 ---
 
 Vim provides its own **unique** way to edit code. Discerning what makes it really different helps a lot figuring out why so many developers love vim. This article attempts to summarize these core concepts and provides a reasonable set of tips for an efficient use of **vim across multiple files**.
@@ -15,13 +16,13 @@ Because vim is harder to grasp when beginning, limiting the number of plugins is
 
 _This article assumes the reader already has basic vim knowledge. When mentioning commands, `<C-key>` means "Ctrl+key". Capitalization of letters is meaningful as it implies pressing_ shift _at the same time._
 
-## Buffers
+# Buffers
 
 First of all, it's time to **forget about tabs**. In vim, tabs are a power-user feature that may be useful for those who already master buffers and in very specific scenario. Buffers alone are more than enough. Also, no plugin will put vscode's tabs in vim.
 
 Experienced vim users often refer to navigating through files as _flowing through buffers_. Indeed, when you need to access a piece of code, you just place your cursor in it to explore or edit it. There is **no need to care about which buffer is open and where it is**. We'll see that with just a few commands we are able to keep as many buffers open as we like while still keep editing efficiently!
 
-### Opening files
+## Opening files
 
 **`:find path/file`** opens `path/file`. `:find` supports quick file search if we enable it, so let's run / add to .vimrc the following commands in order to get comfortable:
 
@@ -34,11 +35,11 @@ set wildignore+=**/node_modules/**
 
 We've just set up quick file search! Tab completion now finds files deep in current working directory. For example, `:find foobar<Tab>` or `:find *.ht<Tab>` will both find `some/nested/dir/foobarbaz.html`. If multiple files match, the _wildmenu_ we just enabled appears on top on the command line and more `<Tab>` presses rotate across matches.
 
-### Explore files
+## Explore files
 
 Running **`:find` on a folder** opens _netrw_, a simple yet efficient file explorer. It provides a tree view if you hit `l` a few times! You can also create a new file by hitting `%`, delete with `D` and rename with `R`. Using `:find` alone goes to current file's directory and `:find .` goes to current working directory.
 
-### Navigating across buffers
+## Navigating across buffers
 
 A developer's workflow often involves going back and forth in a code base. Although `:find` or [fzf](https://github.com/junegunn/fzf.vim) are great for quickly opening files, we can go faster once they have already been opened in buffers.
 
@@ -48,12 +49,12 @@ A developer's workflow often involves going back and forth in a code base. Altho
 
 The two latter commands take advantage of the [jumplist](https://vim.fandom.com/wiki/Jumping_to_previously_visited_locations) which contains all cursor _jumps_, including inside the same buffer. This is much more powerful than just "tab switching" in other editors as you can extremely quicky jump back and forth more precise contexts. Although they are precise, they might take you more time than a simple `Ctrl-6` swap-back or than moving away with a quick `:find` or _fzf_.
 
-### Closing buffers
+## Closing buffers
 
 It won't cause any trouble to keep any number of buffers open and it is often recommended to keep them open. However, when we mainly rely on `Ctrl-o`/`Ctrl-i` to navigate, we want to keep the jumplist history clean. So if, for example, a file has been opened by mistake, all what is needed is **`:bw`**.
 
 
-## Windows
+# Windows
 
 Windows are viewports on a buffer. A single one takes all vim's space when launching the editor. Some commands like `:help anything` spawn a new window. `:q` closes current window or the editor when no window remain.
 
@@ -66,7 +67,7 @@ As I don't need editor splits that much, I won't get more into details. However 
 That's all for file navigation in vim, keeping it **simple and mouse-free**! I still recommend to look into [fzf](https://github.com/junegunn/fzf.vim) for fuzzy finding; I bound it to `<C-p>` to speed up file jumps. I also recommend to install [ripgrep](https://github.com/BurntSushi/ripgrep) on your system for recursive directory text searches. _fzf.vim_ automatically picks up on _ripgrep_ and you just need to run `:Rg textOrRegex` to start using it.
 
 
-## Cheatsheet _(tl;dr)_
+# Cheatsheet _(tl;dr)_
 
 In buffer | Action
 --: | ---
