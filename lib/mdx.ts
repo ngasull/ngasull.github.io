@@ -1,64 +1,90 @@
-import fs from "fs"
 import matter from "gray-matter"
 import { mdxComponents } from "lib/mdxComponents"
 import renderToString from "next-mdx-remote/render-to-string"
-import path from "path"
-import util from "util"
-import headings from "remark-autolink-headings"
-import slug from "remark-slug"
+import remarkAutolinkHeadings from "remark-autolink-headings"
+import remarkSlug from "remark-slug"
 import visit from "unist-util-visit"
 
-type Article = {
-  filepath: string
-  date: string
+export type MdxPage = {
+  content: string
   lang: string
+  title: string
+}
+
+export type Article = MdxPage & {
+  date: string
   slug: string
+  categories: string[]
+  toc: Toc[]
 }
 
-export const getArticles = async (): Promise<Article[]> => {
-  const readdir = util.promisify(fs.readdir)
+export type Toc = [{ depth: number; title?: string; slug?: string }, Toc[]]
+
+export async function getArticles(): Promise<Article[]> {
   return (
-    await Promise.all(
-      (await readdir(path.resolve("lib/posts"))).map(
-        async (filename: string) => {
-          const postMatch = filename.match(
-            /^(\d{4}-\d\d-\d\d)-(fr|en)-([^/]+).mdx$/
-          )
-          if (!postMatch)
-            throw new Error(`Pas de la forme blog post: ${filename}`)
-          const [, date, lang, slug] = postMatch
-          return {
-            filepath: path.join("lib/posts", filename),
-            date,
-            lang,
-            slug,
-          }
-        }
-      )
-    )
-  ).filter(Boolean)
+    await Promise.all([
+      ...(await getFromDir(require.context("lib/posts", false, /\.mdx?$/))),
+      ...(process.env.NODE_ENV === "production"
+        ? []
+        : await getFromDir(require.context("lib/drafts", false, /\.mdx?$/))),
+    ])
+  ).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+
+  async function getFromDir(r: ReturnType<typeof require.context>) {
+    return r.keys().map((key) => getArticle(r.resolve(key), r(key).default))
+  }
 }
 
-export async function processRemote(
+export async function findArticle(
+  locale: string,
+  slug: string
+): Promise<Article | null> {
+  return (
+    (process.env.NODE_ENV === "production"
+      ? null
+      : await findFromDir(require.context("lib/drafts", false, /\.mdx?/))) ||
+    (await findFromDir(require.context("lib/posts", false, /\.mdx?/)))
+  )
+
+  async function findFromDir(r: ReturnType<typeof require.context>) {
+    const key = r.keys().find((k) => k.endsWith(`${locale}-${slug}.mdx`))
+    return key && (await getArticle(r.resolve(key), r(key).default))
+  }
+}
+
+export async function getArticle(
   filepath: string,
-  meta: Record<string, unknown>
-) {
-  const readFile = util.promisify(fs.readFile)
-  const file = await readFile(filepath)
-  const { content, data } = matter(file)
-  const scope = { ...meta, ...data }
+  mdx: string
+): Promise<Article> {
+  const postMatch = filepath.match(/\/(\d{4}-\d\d-\d\d)-(fr|en)-([^/]+)\.mdx$/)
+  if (!postMatch) throw new Error(`Pas de la forme blog post: ${filepath}`)
+  const [, date, lang, slug] = postMatch
+  return {
+    date,
+    slug,
+    toc: [],
+    ...(await parseMdx(lang, mdx)),
+  } as Article
+}
+
+export async function parseMdx(lang: string, mdx: string): Promise<MdxPage> {
+  const { content, data } = matter(mdx)
+  const scope = {
+    ...data,
+    content,
+    lang,
+  } as MdxPage
   await renderToString(content, {
     mdxOptions: {
       remarkPlugins: [
-        slug,
+        remarkSlug,
         () => (tree, file) => {
-          type Toc = [{ depth: number; title?: string; slug?: string }, Toc[]]
           const stack: Toc[] = [[{ depth: 0 }, []]]
           visit(tree, "heading", (heading) => {
             let depth = stack[0][0].depth + 1
 
             while (heading.depth > depth) {
-              if (heading.depth - depth > 1) {
+              if ((heading.depth as number) - depth > 1) {
                 stack.unshift([{ depth }, []])
                 stack[1][1].push(stack[0])
               } else {
@@ -71,7 +97,13 @@ export async function processRemote(
               depth -= 1
             }
 
-            const newItem = [{ depth, slug: heading.data.id }, []]
+            const newItem: Toc = [
+              {
+                depth,
+                slug: (heading.data?.id as string | null) || "needs-slug-id",
+              },
+              [],
+            ]
             visit(heading, "text", (node) => {
               newItem[0].title = node.value as string
             })
@@ -87,12 +119,16 @@ export async function processRemote(
     components: mdxComponents,
     scope,
   })
-  const staticSource = await renderToString(content, {
+  return scope
+}
+
+export async function processRemote(page: MdxPage): Promise<string> {
+  return await renderToString(page.content, {
     mdxOptions: {
       remarkPlugins: [
-        slug,
+        remarkSlug,
         [
-          headings,
+          remarkAutolinkHeadings,
           {
             behavior: "append",
             properties: {
@@ -121,7 +157,6 @@ export async function processRemote(
       ],
     },
     components: mdxComponents,
-    scope,
+    scope: page,
   })
-  return { staticSource, scope }
 }

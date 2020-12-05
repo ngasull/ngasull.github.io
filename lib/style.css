@@ -111,7 +111,7 @@
   h4,
   h5,
   h6 {
-    margin-bottom: theme("spacing.1");
+    margin-bottom: theme("spacing.2");
   }
   h1 {
     font-size: theme("fontSize.4xl");

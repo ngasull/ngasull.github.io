@@ -8,4 +8,11 @@ module.exports = {
     locales: ["en", "fr"],
     defaultLocale: "fr",
   },
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.mdx?$/,
+      use: "raw-loader",
+    })
+    return config
+  },
 }

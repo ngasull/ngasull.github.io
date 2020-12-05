@@ -31,7 +31,7 @@ const Header: React.FC = () => {
         {" / "}
         <Link href="/about">{lang === "fr" ? "À propos" : "About"}</Link>
         {" / "}
-        <Link href="/rss.xml">RSS</Link>
+        <a href={`/${lang}/rss.xml`}>RSS</a>
         {" / "}
         <Link href="/" locale={lang === "fr" ? "en" : "fr"}>
           {lang !== "fr" ? "🇫🇷" : "🇬🇧"}

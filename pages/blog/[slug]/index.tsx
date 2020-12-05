@@ -1,4 +1,4 @@
-import { getArticles, processRemote } from "lib/mdx"
+import { findArticle, getArticles, processRemote } from "lib/mdx"
 import { GetStaticPaths, GetStaticProps } from "next"
 
 export { Article as default } from "lib/Article"
@@ -7,16 +7,12 @@ export const getStaticProps: GetStaticProps = async ({
   locale,
   params: { slug },
 }) => {
-  const article = (await getArticles()).find(
-    (a) => a.slug === slug && a.lang === locale
-  )
-  console.log(article)
+  const article = await findArticle(locale, slug as string)
   if (!article) return { notFound: true }
-  const { filepath, ...meta } = article
-  const { staticSource, scope } = await processRemote(filepath, meta)
+  const staticSource = await processRemote(article)
   return {
     props: {
-      scope,
+      scope: article,
       staticSource,
     },
   }

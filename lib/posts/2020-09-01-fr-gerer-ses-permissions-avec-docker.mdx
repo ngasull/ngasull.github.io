@@ -4,7 +4,7 @@ categories:
   - devops
 ---
 
-<>{props.toc}</>
+<Toc lang={lang} toc={toc} />
 
 # Vocabulaire
 
@@ -27,7 +27,7 @@ Pour éviter ce problème, nous allons indiquer au daemon Docker à quels utilis
 
 # Mise en place
 
-<h5 no-toc>Configuration hôte impactée :</h5>
+<h5>Configuration hôte impactée :</h5>
 
 - `/etc/subuid` - configuration des mappings utilisateur hôte &lt;-&gt; conteneur
 - `/etc/subgid` - configuration des mappings groupe hôte &lt;-&gt; conteneur
@@ -43,14 +43,14 @@ Pour ma part, je map simplement `root` vers mon user hôte puis tous les autres 
 
 La seule chose à confirmer : l'id de ton utilisateur hôte. C'est souvent 1000 et c'est vérifiable en exécutant `id -u`.
 
-<h5 no-toc>/etc/subuid</h5>
+<h5>/etc/subuid</h5>
 
 ```
 dockremap:1000:1
 dockremap:100001:65536
 ```
 
-<h5 no-toc>Explication</h5>
+<h5>Explication</h5>
 
 Un mapping nommé `dockremap` est créé :
 - _1e ligne :_ assigne 1 utilisateur (de conteneur pour nous) vers l'uid 1000. Ce 1e utilisateur est l'utilisateur 0, donc `root`.
@@ -58,14 +58,14 @@ Un mapping nommé `dockremap` est créé :
 
 Je pense qu'appliquer le même principe pour les groupes est tout aussi profitable : la transparence est totale. On peut vérifier son `gid` avec `id -g`.
 
-<h5 no-toc>/etc/subgid</h5>
+<h5>/etc/subgid</h5>
 
 ```
 dockremap:1000:1
 dockremap:100001:65536
 ```
 
-<h5 no-toc>/etc/docker/daemon.json</h5>
+<h5>/etc/docker/daemon.json</h5>
 
 ```
 {

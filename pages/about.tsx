@@ -1,17 +1,16 @@
-import { processRemote } from "lib/mdx"
+import { parseMdx, processRemote } from "lib/mdx"
 import { GetStaticProps } from "next"
 
 export { About as default } from "lib/About"
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  const { staticSource, scope } = await processRemote(
-    `lib/about.${locale}.mdx`,
-    {}
-  )
+  const about = await (locale === "fr"
+    ? parseMdx("fr", require("lib/about.fr.mdx").default)
+    : parseMdx("en", require("lib/about.en.mdx").default))
   return {
     props: {
-      scope,
-      staticSource,
+      scope: about,
+      staticSource: await processRemote(about),
     },
   }
 }
