@@ -31,7 +31,7 @@ export async function getArticles(): Promise<Article[]> {
   ).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
 
   async function getFromDir(r: ReturnType<typeof require.context>) {
-    return r.keys().map((key) => getArticle(r.resolve(key), r(key).default))
+    return r.keys().map((key) => getArticle(key, r(key).default))
   }
 }
 
@@ -48,7 +48,7 @@ export async function findArticle(
 
   async function findFromDir(r: ReturnType<typeof require.context>) {
     const key = r.keys().find((k) => k.endsWith(`${locale}-${slug}.mdx`))
-    return key && (await getArticle(r.resolve(key), r(key).default))
+    return key && (await getArticle(key, r(key).default))
   }
 }
 
