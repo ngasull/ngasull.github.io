@@ -19,6 +19,7 @@ export const Blog: React.FC<{
             <Link href={`/blog/${slug}`}>{`📖 ${title}`}</Link>
           </h3>
           {`Blog » ${new Date(date).toLocaleString(lang, {
+            // @ts-ignore It just works
             dateStyle: "medium",
           })} » ${categories.join(" ")}`}
         </article>
