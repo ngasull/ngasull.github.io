@@ -11,7 +11,7 @@ export const Blog: React.FC<{
   }>
 }> = ({ articles }) => {
   return (
-    <Layout title="Articles">
+    <Layout>
       <h1>Articles</h1>
       {articles.map(({ lang, slug, title, date, categories }) => (
         <article key={slug}>

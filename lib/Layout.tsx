@@ -3,18 +3,18 @@ import { useRouter } from "next/dist/client/router"
 import Head from "next/head"
 import Link from "next/link"
 
-export const Layout: React.FC<{ children: React.ReactNode; title: string }> = ({
-  children,
-  title,
-}) => {
+export const Layout: React.FC<{
+  children: React.ReactNode
+  articleTitle?: string
+}> = ({ children, articleTitle }) => {
   return (
     <>
       <Head>
-        <title>{`${title} | Nico's Lab`}</title>
+        <title>{`${articleTitle || "Articles"} | Nico's Lab`}</title>
       </Head>
       <Header />
       <main aria-label="Content">{children}</main>
-      <Footer />
+      <Footer showBack={!!articleTitle} />
     </>
   )
 }
@@ -25,7 +25,7 @@ const Header: React.FC = () => {
   return (
     <header className="ng-header">
       <h1>{lang === "fr" ? "Le labo de Nico" : "Nico's lab"}</h1>
-      <h3 className="py-2 md:p-0">{"🔭🎶🕺"}</h3>
+      <h3 className="py-2 md:p-0">{"🔭 🎶 🕺"}</h3>
       <nav>
         <Link href="/">Blog</Link>
         {" / "}
@@ -41,13 +41,13 @@ const Header: React.FC = () => {
   )
 }
 
-export function Footer(): React.ReactElement {
+export const Footer: React.FC<{ showBack: boolean }> = ({ showBack }) => {
   const router = useRouter()
   return (
     <footer className="mt-8 text-center">
-      {!false && (
+      {showBack && (
         <p>
-          <Link href="/">
+          <Link href="/blog">
             {router.locale === "fr"
               ? "Retour aux articles  👀"
               : "Go to articles 👀"}
@@ -75,14 +75,10 @@ export function Footer(): React.ReactElement {
           <SocialIcon icon="linkedin" />
         </a>
         <Link href="/about">
-          <a>
-            <SocialIcon icon="at" />
-          </a>
+          <SocialIcon icon="at" />
         </Link>
         <Link href="/rss.xml">
-          <a>
-            <SocialIcon icon="rss" />
-          </a>
+          <SocialIcon icon="rss" />
         </Link>
       </address>
     </footer>

@@ -1,12 +1,11 @@
 module.exports = {
-  target: "serverless",
-  devIndicators: {
-    autoPrerender: false,
-  },
+  //devIndicators: {
+  //  buildActivity: false,
+  //},
   poweredByHeader: false,
   i18n: {
     locales: ["en", "fr"],
-    defaultLocale: "fr",
+    defaultLocale: "en",
   },
   webpack: (config) => {
     config.module.rules.push({

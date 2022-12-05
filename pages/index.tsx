@@ -6,12 +6,13 @@ const HomePage: React.FC = () => {
 export default HomePage
 
 export const getServerSideProps: GetServerSideProps = async ({
-  resolvedUrl,
+  defaultLocale,
+  locale,
 }) => {
   return {
     props: {},
     redirect: {
-      destination: `${resolvedUrl}blog`,
+      destination: locale === defaultLocale ? "/blog" : `/${locale}/blog`,
       permanent: false,
     },
   }

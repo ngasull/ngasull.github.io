@@ -1,7 +1,5 @@
 /// <reference types="next" />
-/// <reference types="next/types/global" />
+/// <reference types="next/image-types/global" />
 
-declare module "*.mdx" {
-  let MDXComponent: (props: any) => JSX.Element
-  export default MDXComponent
-}
+// NOTE: This file should not be edited
+// see https://nextjs.org/docs/basic-features/typescript for more information.

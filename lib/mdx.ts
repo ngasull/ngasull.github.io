@@ -21,50 +21,56 @@ export type Article = MdxPage & {
 export type Toc = [{ depth: number; title?: string; slug?: string }, Toc[]]
 
 export async function getArticles(): Promise<Article[]> {
-  return (
-    await Promise.all([
-      ...(await getFromDir(require.context("lib/posts", false, /\.mdx?$/))),
-      ...(process.env.NODE_ENV === "production"
-        ? []
-        : await getFromDir(require.context("lib/drafts", false, /\.mdx?$/))),
-    ])
-  ).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-
-  async function getFromDir(r: ReturnType<typeof require.context>) {
-    return r.keys().map((key) => getArticle(key, r(key).default))
-  }
+  return (await Promise.all(lsArticles().map((a) => a.article()))).sort(
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+  )
 }
 
 export async function findArticle(
   locale: string,
   slug: string
 ): Promise<Article | null> {
-  return (
-    (process.env.NODE_ENV === "production"
-      ? null
-      : await findFromDir(require.context("lib/drafts", false, /\.mdx?/))) ||
-    (await findFromDir(require.context("lib/posts", false, /\.mdx?/)))
-  )
-
-  async function findFromDir(r: ReturnType<typeof require.context>) {
-    const key = r.keys().find((k) => k.endsWith(`${locale}-${slug}.mdx`))
-    return key && (await getArticle(key, r(key).default))
-  }
+  return lsArticles()
+    .find((a) => a.lang === locale && a.slug === slug)
+    ?.article()
 }
 
-export async function getArticle(
-  filepath: string,
-  mdx: string
-): Promise<Article> {
-  const postMatch = filepath.match(/\/(\d{4}-\d\d-\d\d)-(fr|en)-([^/]+)\.mdx$/)
-  if (!postMatch) throw new Error(`Pas de la forme blog post: ${filepath}`)
-  const [, date, lang, slug] = postMatch
-  return {
-    date,
-    slug,
-    toc: [],
-    ...(await parseMdx(lang, mdx)),
-  } as Article
+export function lsArticles(): {
+  article: () => Promise<Article>
+  date: string
+  lang: string
+  slug: string
+}[] {
+  return [
+    ...(process.env.NODE_ENV === "production"
+      ? []
+      : getFromDir(
+          require.context("lib/drafts", false, /^lib\/drafts\/.+\.mdx?$/)
+        )),
+    ...getFromDir(
+      require.context("lib/posts", false, /^lib\/posts\/.+\.mdx?$/)
+    ),
+  ]
+
+  function getFromDir(r: ReturnType<typeof require.context>) {
+    return r.keys().flatMap((key) => {
+      const postMatch = key.match(/\/(\d{4}-\d\d-\d\d)-(fr|en)-([^/]+)\.mdx$/)
+      if (!postMatch) throw new Error(`Pas de la forme blog post: ${key}`)
+      const [, date, lang, slug] = postMatch
+      return {
+        date,
+        lang,
+        slug,
+        article: async () =>
+          ({
+            date,
+            slug,
+            toc: [],
+            ...(await parseMdx(lang, r(key).default)),
+          } as Article),
+      }
+    })
+  }
 }
 
 export async function parseMdx(lang: string, mdx: string): Promise<MdxPage> {
@@ -82,9 +88,10 @@ export async function parseMdx(lang: string, mdx: string): Promise<MdxPage> {
           const stack: Toc[] = [[{ depth: 0 }, []]]
           visit(tree, "heading", (heading) => {
             let depth = stack[0][0].depth + 1
+            const hdepth = (heading as any).depth
 
-            while (heading.depth > depth) {
-              if ((heading.depth as number) - depth > 1) {
+            while (hdepth > depth) {
+              if ((hdepth as number) - depth > 1) {
                 stack.unshift([{ depth }, []])
                 stack[1][1].push(stack[0])
               } else {
@@ -92,7 +99,7 @@ export async function parseMdx(lang: string, mdx: string): Promise<MdxPage> {
               }
               depth += 1
             }
-            while (heading.depth < depth) {
+            while (hdepth < depth) {
               stack.shift()
               depth -= 1
             }
@@ -105,7 +112,7 @@ export async function parseMdx(lang: string, mdx: string): Promise<MdxPage> {
               [],
             ]
             visit(heading, "text", (node) => {
-              newItem[0].title = node.value as string
+              newItem[0].title = (node as any).value as string
             })
             stack[0][1].push(newItem)
           })

@@ -15,7 +15,7 @@ export const Article: React.FC<{
   const { lang, title } = scope
   const content = hydrate(staticSource, { components: mdxComponents, scope })
   return (
-    <Layout title={title}>
+    <Layout articleTitle={title}>
       <h1>{title}</h1>
 
       <h6 className="pb-8">
