@@ -49,8 +49,6 @@ export async function generateRSSFr(articles: Article[]): Promise<void> {
   })
   await Promise.all([
     writeFile(path.resolve("public/fr/rss.xml"), feed.xml(), "utf8"),
-    // Because of Next's default locale
-    writeFile(path.resolve("public/rss.xml"), feed.xml(), "utf8"),
   ])
   console.log(`Generated RSS feed`)
 }
@@ -84,6 +82,6 @@ export async function generateRSSEn(articles: Article[]): Promise<void> {
   await mkdir(path.resolve("public/en")).catch(() => {
     // noop
   })
-  await writeFile(path.resolve("public/en/rss.xml"), feed.xml(), "utf8")
+  await writeFile(path.resolve("public/rss.xml"), feed.xml(), "utf8")
   console.log(`Generated RSS feed`)
 }

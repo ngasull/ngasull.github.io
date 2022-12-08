@@ -3,7 +3,8 @@
 # Next
 .next
 out
-rss.xml
+/public/rss.xml
+/public/fr/rss.xml
 
 # Logs
 logs

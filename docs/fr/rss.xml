@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Nico's Lab]]></title><description><![CDATA[Experiences and thoughts of a developer who enjoys functional programming and aspires to game design.]]></description><link>https://nglab.pro</link><image><url>https://nglab.pro/icon.png</url><title>Nico&apos;s Lab</title><link>https://nglab.pro</link></image><generator>RSS for Node</generator><lastBuildDate>Thu, 08 Dec 2022 16:48:50 GMT</lastBuildDate><atom:link href="https://nglab.pro/fr/rss.xml" rel="self" type="application/rss+xml"/><pubDate>Thu, 08 Dec 2022 16:48:50 GMT</pubDate><copyright><![CDATA[2022 Nicolas Gasull]]></copyright><language><![CDATA[fr]]></language><managingEditor><![CDATA[ng@nglab.pro]]></managingEditor><webMaster><![CDATA[ng@nglab.pro]]></webMaster><ttl>60</ttl><item><title><![CDATA[Pourquoi Docker ?]]></title><description><![CDATA[<section class="doc-section level-1"><h2 id="_pour_travailler_ensemble">Pour travailler ensemble</h2><p>Tout le monde développe sur différentes machines. Il n’est pas rare que plusieurs collègues aient installé différentes version d’une même library, d’un package manager, du runtime de leur application…​ (cc node/npm 👋)</p>
+<p>Lorsque l’application de développement est dockerisée, tous les devs (et la prod !) sont soumis aux mêmes règles, ce qui évite le syndrôme de <em>"mais ça marche sur mon PC"</em> tout en réduisant la configuration nécessaire à installer l’environnement de dev. Voir juste après !</p></section>
+<section class="doc-section level-1"><h2 id="_pour_moins_perdre_de_temps_à_configurer">Pour moins perdre de temps à configurer</h2><p>La configuration, c’est du temps passé à ne pas être productif. Plus il y a d’environnements dans lesquels une application doit tourner, plus il y a de configuration à faire. Docker permet d’abstraire l’environnement dans lequel tourne l’application et donc de ne faire que le minimum nécessaire.</p>
+<p>Une conséquence notable : pour ajouter un service à la stack, plus forcément besoin d’apprendre en détails une technologie. Il suffit d’ajouter une image existante de celle-ci, et de simplement spécifier les variables d’environnement nécessaires. Par exemple, pour <a href="https://hub.docker.com/_/postgres/">ajouter une database PostgreSQL</a>, il suffit au minimum de renseigner un root password et de monter un volume pour persister les données.</p></section>
+<section class="doc-section level-1"><h2 id="_pour_séparer_les_problèmes">Pour séparer les problèmes</h2><p>Comme chaque service est aussi simple que possible, chacun n’a que très peu de dépendances avec le reste du monde. On voit que, par nature, les conteneurs nous poussent à n’avoir que le minimum vital de dépendances entre services.</p>
+<p>Par dépendances, je pense en particulier à :</p>
+<div class="ulist"><ul><li>Système, programmes, libraries installées</li><li>Configurations associées à ce setup</li><li>Volumes (fichiers)</li><li>Accès réseau</li></ul></div></section>
+<section class="doc-section level-1"><h2 id="_pour_gérer_et_sécuriser_les_connexions_réseau">Pour gérer et sécuriser les connexions réseau</h2><p>Car oui : c’est vite fait de faire fuiter le port d’une database, et <a href="https://www.bleepingcomputer.com/news/security/new-meow-attack-has-deleted-almost-4-000-unsecured-databases/">quand elle n’est pas sécurisée c’est gênant</a> 😬</p>
+<p>L’idée est de penser un service comme une boîte noire qui expose un ou plusieurs ports. Les services communiquent entre eux grâce aux volumes montés en commun ou à travers des ports internes. En effet, les <a href="https://docs.docker.com/compose/networking/">services appartenant à un même réseau</a> peuvent par défaut s’accéder entre eux.</p></section>
+<section class="doc-section level-1"><h2 id="_pièges_et_trucs_à_savoir">Pièges et trucs à savoir</h2><p>Sous Windows et Mac, les conteneurs tournent sur une VM. Du coup c’est lent, pas natif et les lectures/écritures disque peuvent ralentir l’édition de fichiers. La solution est simple : utilise Linux 😏 (ou un Windows/Mac puissant)</p>
+<p>Lorsqu’un même volume (dossier) est monté en écriture dans deux conteneurs à la fois, on peut se retrouver avec des comportements inattendus : chez moi, l’intégralité du dossier généré par un run de build disparaissait en même temps que le conteneur à la fin du run. Je recommande donc vivement de ne monter en écriture qu’un seul fichier ou dossier à la fois.</p>
+<p>C’est possible de ne partager en écriture qu’une partie d’une même arborescence commune. Par exemple, si <code>backend</code> et <code>frontend</code> partagent <code>code</code> en lecture mais que <code>backend</code> doit écrire dans <code>code/target</code> et <code>frontend</code> doit écrire dans <code>code/dist</code>, alors les volumes peuvent être surchargés comme ceci :</p>
+<div class="listing-block"><pre class="highlightjs highlight"><code class="language-yml hljs language-yaml" data-lang="yml"><span class="hljs-attr">backend:</span>
+  <span class="hljs-attr">volumes:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">./code:/code:ro</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">./code/target:/code/target</span>
+
+<span class="hljs-attr">webapp:</span>
+  <span class="hljs-attr">volumes:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">./code:/code:ro</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">./code/dist:/code/dist</span></code></pre></div>
+<p>Les images Docker peuvent vite prendre de l’espace disque. Mais avec le temps, la communauté opte de plus en plus pour des versions minimalistes de chaque image. Autrefois avec une version <em>slim</em> de Debian, et aujourd’hui souvent avec une version <a href="https://alpinelinux.org/about/">Alpine Linux</a> qui permet aux images de faire moins de 10Mo de base ! Préfère-donc utiliser les tags <code>-alpine</code> de chaque image.</p>
+<p>Enfin, la gestion des permissions est déroutante au début. Docker tourne en root par défaut et a de bonnes raisons de le faire : autant dire que j’apprécie de pouvoir ouvrir les ports 80 ou 443 en dev comme en prod 🙂</p>
+<p>Pour mieux comprendre pourquoi et comment bien gérer ses permissions : <a href="/fr/blog/gerer-ses-permissions-avec-docker">voir cet article</a>.</p></section>
+<section class="doc-section level-1"><h2 id="_par_où_commencer">Par où commencer?</h2><p>En prenant le temps de lire la doc dans l’ordre, tout ne peut que bien se passer :</p>
+<div class="olist arabic"><ol class="arabic"><li><a href="https://docs.docker.com/get-started/overview/">Comprends Docker</a></li><li><a href="https://docs.docker.com/compose/">Comprends docker compose</a> pour simplement faire cohabiter les services entre eux</li><li>Installe <a href="https://docs.docker.com/engine/install/">docker</a> et <a href="https://docs.docker.com/compose/install/">son plugin compose</a></li><li><a href="https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user">Ajoute ton user au groupe <code>docker</code></a> pour piloter le daemon sans <code>sudo</code></li><li>C’est parti ! N’oublie pas de garder la configuration la plus simple possible.</li></ol></div>
+<details><summary>Exemple</summary><div class="content"><p>Une stack complète React/Rust/PostgreSQL pourrait être lancée avec la simple config suivante à la racine d’un projet :</p>
+<div class="listing-block"><pre class="highlightjs highlight"><code class="language-yml hljs language-yaml" data-lang="yml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3"</span>
+<span class="hljs-attr">services:</span>
+  <span class="hljs-attr">db:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">postgres:alpine</span>
+    <span class="hljs-attr">environment:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">POSTGRES_PASSWORD=yolo</span>
+    <span class="hljs-attr">volumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">./db/data:/var/lib/postgresql/data</span>
+  <span class="hljs-attr">backend:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">rust:slim</span>
+    <span class="hljs-attr">environment:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">PGHOST=db</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">PGDATABASE=monservice</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">PGUSER=root</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">PGPASSWORD=yolo</span>
+    <span class="hljs-attr">volumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">./backend/:/home/backend</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">./webapp/:/home/webapp:ro</span>
+    <span class="hljs-attr">command:</span> <span class="hljs-string">cargo</span> <span class="hljs-string">run</span>
+    <span class="hljs-attr">ports:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-number">4000</span><span class="hljs-string">:4000</span>
+  <span class="hljs-attr">webapp:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">node:alpine</span>
+    <span class="hljs-attr">environment:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">BACKEND_URL=http://backend:4000/</span>
+    <span class="hljs-attr">volumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">./webapp/:/home/webapp</span>
+    <span class="hljs-attr">command:</span> <span class="hljs-string">sh</span> <span class="hljs-string">-c</span> <span class="hljs-string">"yarn install &amp;&amp; CI=true yarn start"</span>
+    <span class="hljs-attr">ports:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-number">80</span><span class="hljs-string">:8080</span></code></pre></div>
+<p><code>docker compose up -d</code> et c’est parti directement sur <a href="http://localhost">localhost</a> ! 💻</p></div></details></section>]]></description><link>https://nglab.pro/pourquoi-docker</link><guid isPermaLink="true">https://nglab.pro/pourquoi-docker</guid><category><![CDATA[devops]]></category><dc:creator><![CDATA[Nicolas Gasull]]></dc:creator><pubDate>Thu, 06 Aug 2020 00:00:00 GMT</pubDate></item><item><title><![CDATA[Gérer ses permissions avec Docker]]></title><description><![CDATA[<section id="preamble" aria-label="Preamble"><p>Tout d’abord soyons d’accord sur les mots :</p>
+<div class="ulist"><ul><li>L'<strong><em>hôte</em></strong> est le système d’exploitation de la machine, celui qui fait tourner Docker lui-même</li><li>Nous utiliserons <strong><em>conteneur</em></strong> pour se référer à ce qui est exécuté dans l’univers de Docker</li><li>Les <strong><em>user namespaces</em></strong>, que j’appellerai <strong><em>subuids</em></strong>, sont une fonctionnalité native Unix pour faire correspondre les ids d’utilisateurs système vers une page d’utilisateurs donnée.</li></ul></div>
+<p>L’article décrit comment utiliser les user namespaces (<em>subuids</em>) dans un environnement Unix pour réserver une plage d’utilisateurs au daemon Docker. Il est probable que Docker for Mac supporte cette fonctionnalité.</p></section>
+<nav id="toc" class="toc" role="doc-toc"><h2 id="toc-title">Table des matières</h2><ol class="toc-list level-1"><li><a href="#_motivation">Motivation</a></li><li><a href="#_mise_en_place">Mise en place</a><ol class="toc-list level-2"><li><a href="#_mappings_de_dev">Mappings de dev</a></li><li><a href="#_mappings_de_ciproduction">Mappings de CI/production</a></li></ol></li><li><a href="#_problèmes_et_trucs_à_savoir">Problèmes et trucs à savoir</a></li></ol></nav>
+<section class="doc-section level-1"><h2 id="_motivation">Motivation</h2><p>Sur l’hôte, sans configuration donnée, les fichiers manipulés par Docker appartiennent au même utilisateur que celui du conteneur. Ce n’est pas rassurant dans le sens où le daemon Docker tourne en <code>root</code> par défaut et que les conteneurs ne sont pas tenus de s’exécuter en tant que l’utilisateur qui leur a été donné en configuration.</p>
+<figure class="example-block"><figcaption>Exemple :</figcaption>
+<div class="example">Les images <code>postgres</code> et <code>mysql</code> écrivent d’elles-mêmes une partie de leurs fichiers avec les les utilisateurs de PostgreSQL et MySQL.</div></figure>
+<p>Pour éviter ce problème, nous allons indiquer au daemon Docker à quels utilisateurs hôte correspondent tous les utilisateurs des conteneurs.</p></section>
+<section class="doc-section level-1"><h2 id="_mise_en_place">Mise en place</h2><h5 id="_configuration_hôte_impactée" class="discrete">Configuration hôte impactée :</h5>
+<div class="ulist"><ul><li><code>/etc/subuid</code> - configuration des mappings utilisateur hôte ⇐⇒ conteneur</li><li><code>/etc/subgid</code> - configuration des mappings groupe hôte ⇐⇒ conteneur</li><li><code>/etc/docker/daemon.json</code> - configuration du daemon Docker</li></ul></div>
+<p>Selon moi, c’est avantageux de configurer différemment ces mappings sur les machines des développeurs et en CI/production. En effet : autant tirer profit de cette flexibilité pour développer confortablement tout en gardant la production sous contrôle.</p>
+<section class="doc-section level-2"><h3 id="_mappings_de_dev">Mappings de dev</h3><p>En mappant le <code>root</code> des conteneurs vers ton utilisateur hôte, tu peux simplement profiter d’une transparence de permissions par défaut. Plus de problèmes avec les volumes générés en <code>root</code> hôte puis crashant l’exécution à cause de la mauvaise permission !</p>
+<p>Pour ma part, je map simplement <code>root</code> vers mon user hôte puis tous les autres uids 1+ vers 100001+ sur l’hôte.</p>
+<p>La seule chose à confirmer : l’id de ton utilisateur hôte. C’est souvent 1000 et c’est vérifiable en exécutant <code>id -u</code>.</p>
+<h5 id="_etcsubuid" class="discrete">/etc/subuid</h5>
+<div class="listing-block"><pre class="highlightjs highlight"><code class="language-none hljs">dockremap:1000:1
+dockremap:100001:65536</code></pre></div>
+<h5 id="_explication" class="discrete">Explication</h5>
+<p>Un mapping nommé <code>dockremap</code> est créé :</p>
+<div class="ulist"><ul><li><em>1e ligne :</em> assigne 1 utilisateur (de conteneur pour nous) vers l’uid 1000. Ce 1e utilisateur est l’utilisateur 0, donc <code>root</code>.</li><li><em>2e ligne :</em> assigne les 65536 prochains utilisateurs vers la plage commençant par 100001, donc vers 100001-165536. Par exemple, l’utilisateur conteneur 66 sera manipulé sur l’hôte comme étant l’utilisateur 100066.</li></ul></div>
+<p>Je pense qu’appliquer le même principe pour les groupes est tout aussi profitable : la transparence est totale. On peut vérifier son <code>gid</code> avec <code>id -g</code>.</p>
+<h5 id="_etcsubgid" class="discrete">/etc/subgid</h5>
+<div class="listing-block"><pre class="highlightjs highlight"><code class="language-none hljs">dockremap:1000:1
+dockremap:100001:65536</code></pre></div>
+<h5 id="_etcdockerdaemon_json" class="discrete">/etc/docker/daemon.json</h5>
+<div class="listing-block"><pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"userns-remap"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"dockremap"</span>
+<span class="hljs-punctuation">}</span></code></pre></div>
+<p>N’oublie pas de redémarrer le daemon docker pour que cela prenne effet 😉</p>
+<div class="listing-block"><pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo service docker restart</code></pre></div></section>
+<section class="doc-section level-2"><h3 id="_mappings_de_ciproduction">Mappings de CI/production</h3><p>En production, la configuration dépend davantage des permissions que tu veux donner à tes conteneurs. On est davantage sur des problématiques de sécurité que de praticité.</p>
+<p>Il est possible d’appliquer le même type de configuration que précédemment à condition de bien connaître les conséquences du mapping, en particulier pour l’utilisateur 0.</p></section></section>
+<section class="doc-section level-1"><h2 id="_problèmes_et_trucs_à_savoir">Problèmes et trucs à savoir</h2><p>Il est possible de mapper plusieurs utilisateurs spécifiques conteneur vers des utilisateurs spécifiques hôte. Par exemple :</p>
+<div class="listing-block"><pre class="highlightjs highlight"><code class="language-none hljs">dockremap:1000:1
+dockremap:100001:65
+dockremap:666:1
+dockremap:100067:65469</code></pre></div>
+<p>Ce qui peut se lire : map 0 conteneur vers 1000 hôte, map les 65 utilisateurs suivants sur la plage hôte commençant par 100001, map le suivant (66) vers 666 sur l’hôte, map le reste sur la plage hôte commençant par 100067.</p>
+<hr>
+<p>J’espère que cet article t’aura éclairé sur l’utilisation des <em>user namespaces</em> pour gérer ses permissions Docker. Il s’agit d’un retour d’expérience personnelle et de mes avis sur le sujet. N’hésite pas à explorer par toi-même, faire ta propre configuration et <a href="/fr/about/">me la partager</a> 🙂</p></section>]]></description><link>https://nglab.pro/gerer-ses-permissions-avec-docker</link><guid isPermaLink="true">https://nglab.pro/gerer-ses-permissions-avec-docker</guid><category><![CDATA[devops]]></category><dc:creator><![CDATA[Nicolas Gasull]]></dc:creator><pubDate>Tue, 01 Sep 2020 00:00:00 GMT</pubDate></item></channel></rss>
