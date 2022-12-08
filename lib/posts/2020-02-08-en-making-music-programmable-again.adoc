@@ -37,6 +37,7 @@ A consequence from separating the instruments' sound data is that the module fil
 Moreover, isolating instruments formalizes the identity of the music's sounds. It's a bit like picking an orchestra!
 
 While I love the _module_ format, there are still issues:
+
 - Each module file contains its own orchestra
 - There are many module formats
 - No module format is close to being standard
@@ -71,6 +72,7 @@ image::/img/Polyphone.png[Polyphone screenshot]
 
 The best solutions I found so far rely on https://en.wikipedia.org/wiki/SoundFont[*SoundFonts*]. Despite being non-standard, they are a well-accepted format to define a **bank of instruments**.
 There are some great pieces of software that make great use of SoundFonts for our purpose, notably:
+
 - https://github.com/freeors/SDL/blob/master/SDL2_mixer-2.0.1/timidity/timidity.c[TiMidity], a basic midi player originally written for SDL back in the days (1995). It evolved into its separate repositories and can be used as a library, but is very limited
 - https://github.com/FluidSynth/fluidsynth[FluidSynth], a MIDI synthesis library specifically made to work with SoundFonts and play the music itself. FluidSynth is also easily embeddable in DAWs though a https://en.wikipedia.org/wiki/Virtual_Studio_Technology[VST]
 
