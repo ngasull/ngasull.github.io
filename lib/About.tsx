@@ -1,6 +1,4 @@
 import { Layout } from "lib/Layout"
-import { mdxComponents } from "lib/mdxComponents"
-import hydrate from "next-mdx-remote/hydrate"
 
 export const About: React.FC<{
   staticSource: string
@@ -10,6 +8,9 @@ export const About: React.FC<{
   }
 }> = ({ staticSource, scope }) => {
   const { title } = scope
-  const content = hydrate(staticSource, { components: mdxComponents, scope })
-  return <Layout articleTitle={title}>{content}</Layout>
+  return (
+    <Layout articleTitle={title}>
+      <div dangerouslySetInnerHTML={{ __html: staticSource }} />
+    </Layout>
+  )
 }

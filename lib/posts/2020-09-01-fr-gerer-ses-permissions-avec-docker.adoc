@@ -1,41 +1,36 @@
----
-title:  "Gérer ses permissions avec Docker"
-categories:
-  - devops
----
-
-<Toc lang={lang} toc={toc} />
-
-# Vocabulaire
+= Gérer ses permissions avec Docker
+:categories: devops
 
 Tout d'abord soyons d'accord sur les mots :
-- L'**_hôte_** est le système d'exploitation de la machine, celui qui fait tourner Docker lui-même
-- Nous utiliserons **_conteneur_** pour se référer à ce qui est exécuté dans l'univers de Docker
-- Les **_user namespaces_**, que j'appellerai **_subuids_**, sont une fonctionnalité native Unix pour faire correspondre les ids d'utilisateurs système vers une page d'utilisateurs donnée.
+
+- L'*_hôte_* est le système d'exploitation de la machine, celui qui fait tourner Docker lui-même
+- Nous utiliserons *_conteneur_* pour se référer à ce qui est exécuté dans l'univers de Docker
+- Les *_user namespaces_*, que j'appellerai *_subuids_*, sont une fonctionnalité native Unix pour faire correspondre les ids d'utilisateurs système vers une page d'utilisateurs donnée.
 
 L'article décrit comment utiliser les user namespaces (_subuids_) dans un environnement Unix pour réserver une plage d'utilisateurs au daemon Docker. Il est probable que Docker for Mac supporte cette fonctionnalité.
 
-
-# Motivation
+== Motivation
 
 Sur l'hôte, sans configuration donnée, les fichiers manipulés par Docker appartiennent au même utilisateur que celui du conteneur. Ce n'est pas rassurant dans le sens où le daemon Docker tourne en `root` par défaut et que les conteneurs ne sont pas tenus de s'exécuter en tant que l'utilisateur qui leur a été donné en configuration.
 
-_Exemple : les images `postgres` et `mysql` écrivent d'elles-mêmes une partie de leurs fichiers avec les les utilisateurs de PostgreSQL et MySQL._
+.Exemple :
+[example]
+Les images `postgres` et `mysql` écrivent d'elles-mêmes une partie de leurs fichiers avec les les utilisateurs de PostgreSQL et MySQL.
 
 Pour éviter ce problème, nous allons indiquer au daemon Docker à quels utilisateurs hôte correspondent tous les utilisateurs des conteneurs.
 
+== Mise en place
 
-# Mise en place
+[discrete]
+===== Configuration hôte impactée :
 
-<h5>Configuration hôte impactée :</h5>
-
-- `/etc/subuid` - configuration des mappings utilisateur hôte &lt;-&gt; conteneur
-- `/etc/subgid` - configuration des mappings groupe hôte &lt;-&gt; conteneur
+- `/etc/subuid` - configuration des mappings utilisateur hôte <==> conteneur
+- `/etc/subgid` - configuration des mappings groupe hôte <==> conteneur
 - `/etc/docker/daemon.json` - configuration du daemon Docker
 
 Selon moi, c'est avantageux de configurer différemment ces mappings sur les machines des développeurs et en CI/production. En effet : autant tirer profit de cette flexibilité pour développer confortablement tout en gardant la production sous contrôle.
 
-## Mappings de dev
+=== Mappings de dev
 
 En mappant le `root` des conteneurs vers ton utilisateur hôte, tu peux simplement profiter d'une transparence de permissions par défaut. Plus de problèmes avec les volumes générés en `root` hôte puis crashant l'exécution à cause de la mauvaise permission !
 
@@ -43,31 +38,36 @@ Pour ma part, je map simplement `root` vers mon user hôte puis tous les autres 
 
 La seule chose à confirmer : l'id de ton utilisateur hôte. C'est souvent 1000 et c'est vérifiable en exécutant `id -u`.
 
-<h5>/etc/subuid</h5>
+[discrete]
+===== /etc/subuid
 
 ```
 dockremap:1000:1
 dockremap:100001:65536
 ```
 
-<h5>Explication</h5>
+[discrete]
+===== Explication
 
 Un mapping nommé `dockremap` est créé :
+
 - _1e ligne :_ assigne 1 utilisateur (de conteneur pour nous) vers l'uid 1000. Ce 1e utilisateur est l'utilisateur 0, donc `root`.
 - _2e ligne :_ assigne les 65536 prochains utilisateurs vers la plage commençant par 100001, donc vers 100001-165536. Par exemple, l'utilisateur conteneur 66 sera manipulé sur l'hôte comme étant l'utilisateur 100066.
 
 Je pense qu'appliquer le même principe pour les groupes est tout aussi profitable : la transparence est totale. On peut vérifier son `gid` avec `id -g`.
 
-<h5>/etc/subgid</h5>
+[discrete]
+===== /etc/subgid
 
 ```
 dockremap:1000:1
 dockremap:100001:65536
 ```
 
-<h5>/etc/docker/daemon.json</h5>
+[discrete]
+===== /etc/docker/daemon.json
 
-```
+```json
 {
   "userns-remap": "dockremap"
 }
@@ -75,18 +75,17 @@ dockremap:100001:65536
 
 N'oublie pas de redémarrer le daemon docker pour que cela prenne effet 😉
 
-```
+```bash
 sudo service docker restart
 ```
 
-## Mappings de CI/production
+=== Mappings de CI/production
 
 En production, la configuration dépend davantage des permissions que tu veux donner à tes conteneurs. On est davantage sur des problématiques de sécurité que de praticité.
 
 Il est possible d'appliquer le même type de configuration que précédemment à condition de bien connaître les conséquences du mapping, en particulier pour l'utilisateur 0.
 
-
-# Problèmes et trucs à savoir
+== Problèmes et trucs à savoir
 
 Il est possible de mapper plusieurs utilisateurs spécifiques conteneur vers des utilisateurs spécifiques hôte. Par exemple :
 
@@ -99,6 +98,6 @@ dockremap:100067:65469
 
 Ce qui peut se lire : map 0 conteneur vers 1000 hôte, map les 65 utilisateurs suivants sur la plage hôte commençant par 100001, map le suivant (66) vers 666 sur l'hôte, map le reste sur la plage hôte commençant par 100067.
 
------
+---
 
-J'espère que cet article t'aura éclairé sur l'utilisation des _user namespaces_ pour gérer ses permissions Docker. Il s'agit d'un retour d'expérience personnelle et de mes avis sur le sujet. N'hésite pas à explorer par toi-même, faire ta propre configuration et <a href="/fr/about/">me la partager</a> 🙂
+J'espère que cet article t'aura éclairé sur l'utilisation des _user namespaces_ pour gérer ses permissions Docker. Il s'agit d'un retour d'expérience personnelle et de mes avis sur le sujet. N'hésite pas à explorer par toi-même, faire ta propre configuration et link:/fr/about/[me la partager] 🙂

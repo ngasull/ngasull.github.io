@@ -1,19 +1,10 @@
 import { Layout } from "lib/Layout"
-import { mdxComponents } from "lib/mdxComponents"
-import hydrate from "next-mdx-remote/hydrate"
+import { DocPage } from "./asciidoc"
 
 export const Article: React.FC<{
-  staticSource: string
-  scope: {
-    lang: string
-    slug: string
-    date: string
-    title: string
-    categories: string[]
-  }
-}> = ({ staticSource, scope }) => {
-  const { lang, title } = scope
-  const content = hydrate(staticSource, { components: mdxComponents, scope })
+  scope: DocPage
+}> = ({ scope }) => {
+  const { lang, title, html } = scope
   return (
     <Layout articleTitle={title}>
       <h1>{title}</h1>
@@ -26,7 +17,7 @@ export const Article: React.FC<{
         })}
       </h6>
 
-      {content}
+      <div dangerouslySetInnerHTML={{ __html: html }} />
     </Layout>
   )
 }

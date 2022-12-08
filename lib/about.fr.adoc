@@ -1,30 +1,29 @@
----
-title: À propos
----
+= À propos
 
 Salut c'est Nico 👋
 
 Ma carrière commence en me forgeant une expertise autour des
-**technologies du web**. J'adore l'**architecture logicielle**,
-**l'efficacité**, **la théorie des langages de programmation** et
+*technologies du web*. J'adore l'*architecture logicielle*,
+*l'efficacité*, *la théorie des langages de programmation* et
 les défis qu'engendre le développement en équipe. J'affectionne aussi
-particulièrement **la programmation fonctionnelle** et je cherche en
-permanence la **simplicité** plutôt qu'une complexité qui se voudrait
+particulièrement *la programmation fonctionnelle* et je cherche en
+permanence la *simplicité* plutôt qu'une complexité qui se voudrait
 _cool_.
 
 Voilà donc comment je me décris en tant que développeur. J'ai aussi un
 fort désir de création artistique, bien que sans véritable exprérience
 dans ce domaine. Je prends donc aussi le temps de me découvrir
-artistiquement, en particulier autour de la **composition musicale**
+artistiquement, en particulier autour de la *composition musicale*
 pour laquelle le développement de jeux vidéo est un terrain de jeu idéal.
 
-# Me contacter
+== Me contacter
 
 Le Web nous informe, nous connecte et nous permet de découvrir des univers
 fascinants tout entiers. Si tu veux discuter avec moi, quelle qu'en soit
 la raison, je serai ravi de te lire depuis le formulaire
 ci-dessous&nbsp;!&nbsp;🙂
 
+++++
 <form action="https://formspree.io/myygvdwe" method="POST">
   <p>
     <label>
@@ -37,8 +36,9 @@ ci-dessous&nbsp;!&nbsp;🙂
     <label>
       Message
       <br />
-      <textarea name="message" rows={6}></textarea>
+      <textarea name="message" rows="6"></textarea>
     </label>
   </p>
   <button type="submit">Envoyer</button>
 </form>
+++++

@@ -1,4 +1,4 @@
-import { getArticles, lsArticles, processRemote } from "lib/mdx"
+import { getArticles, lsArticles } from "lib/asciidoc"
 import { GetStaticPaths, GetStaticProps } from "next"
 
 export { Article as default } from "lib/Article"
@@ -6,11 +6,9 @@ export { Article as default } from "lib/Article"
 export const getStaticProps: GetStaticProps = async ({ params: { slug } }) => {
   const article = (await getArticles()).find((a) => a.slug === slug)
   if (!article) return { notFound: true }
-  const staticSource = await processRemote(article)
   return {
     props: {
       scope: article,
-      staticSource,
     },
   }
 }

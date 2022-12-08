@@ -49,6 +49,7 @@
   dl,
   fieldset,
   figure,
+  .imageblock,
   form,
   iframe,
   img,
@@ -337,6 +338,10 @@
 
   /* End of modified new.css */
 
+  .toc > ul {
+    margin: 0;
+  }
+
   svg {
     display: inline-block;
   }
@@ -345,15 +350,17 @@
     width: 100%;
   }
 
-  figure > audio,
-  figure > img {
+  figure > :not(figcaption):first-child {
     display: block;
     margin: auto;
     max-width: 100%;
   }
 
   figcaption {
-    @apply mt-2 text-base italic text-center;
+    @apply text-base italic;
+  }
+  figcaption:last-child {
+    @apply mt-2 text-center;
   }
 
   @media (max-width: theme("screens.md")) {
@@ -407,20 +414,56 @@
     }
   }
 
-  @variants responsive {
-    .mobile-subscreen {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: theme("colors.white");
-      transform: translateX(100%);
-      transition: transform theme("transitionDuration.150") ease;
-    }
-    .mobile-subscreen-show {
-      transform: translateX(0);
-    }
+  .mobile-subscreen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: theme("colors.white");
+    transform: translateX(100%);
+    transition: transform theme("transitionDuration.150") ease;
+  }
+  .mobile-subscreen-show {
+    transform: translateX(0);
+  }
+
+  #toc {
+    padding: theme("spacing.2") theme("spacing.4");
+    background: var(--nc-bg-2);
+    border: 1px solid var(--nc-bg-3);
+    border-radius: theme("borderRadius.DEFAULT");
+  }
+  #toc-title {
+    font-size: theme("fontSize.base");
+    font-weight: theme("fontWeight.bold");
+    margin-bottom: theme("spacing.4");
+  }
+
+  .admonitionblock > table {
+    border-collapse: separate;
+    border: 0;
+    background: none;
+    width: 100%;
+  }
+  .admonitionblock > table td.icon {
+    text-align: center;
+    width: 80px;
+  }
+  .admonitionblock > table td.icon .title {
+    font-weight: bold;
+    font-family: "Open Sans", "DejaVu Sans", sans-serif;
+    text-transform: uppercase;
+  }
+  .admonitionblock > table td.content {
+    padding-left: 1.125em;
+    padding-right: 1.25em;
+  }
+  .admonitionblock > table td.content > :last-child > :last-child {
+    margin-bottom: 0;
+  }
+  div.unbreakable {
+    page-break-inside: avoid;
   }
 }
 
@@ -440,13 +483,11 @@
 
 @tailwind utilities;
 @layer utilities {
-  @variants responsive {
-    .max-lines-2 {
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-      line-clamp: 2;
-      overflow: hidden;
-    }
+  .max-lines-2 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
   }
 }

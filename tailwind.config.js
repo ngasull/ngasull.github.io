@@ -8,12 +8,7 @@ module.exports = {
     defaultLineHeights: true,
     standardFontWeights: true,
   },
-  purge: {
-    content: ["lib/**/*.tsx", "pages/**/*.tsx"],
-    options: {
-      safelist: ["anchor"],
-    },
-  },
+  content: ["lib/**/*.tsx", "pages/**/*.tsx"],
   theme: {
     extend: {
       maxHeight: {

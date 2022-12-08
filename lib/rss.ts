@@ -3,7 +3,7 @@ import fs from "fs"
 import path from "path"
 import showdown from "showdown"
 import util from "util"
-import { Article } from "lib/mdx"
+import { Article } from "lib/asciidoc"
 
 function getBaseOpts() {
   const url = "https://nglab.pro"
@@ -33,7 +33,7 @@ export async function generateRSSFr(articles: Article[]): Promise<void> {
 
   for (const article of articles) {
     const converter = new showdown.Converter()
-    const html = converter.makeHtml(article.content)
+    const html = converter.makeHtml(article.html)
     feed.item({
       title: article.title,
       description: html,
@@ -70,7 +70,7 @@ export async function generateRSSEn(articles: Article[]): Promise<void> {
 
   for (const article of articles) {
     const converter = new showdown.Converter()
-    const html = converter.makeHtml(article.content)
+    const html = converter.makeHtml(article.html)
     feed.item({
       title: article.title,
       description: html,

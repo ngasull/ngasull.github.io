@@ -1,4 +1,4 @@
-import { getArticles } from "lib/mdx"
+import { getArticles } from "lib/asciidoc"
 import { generateRSSEn, generateRSSFr } from "lib/rss"
 import { GetStaticProps } from "next"
 

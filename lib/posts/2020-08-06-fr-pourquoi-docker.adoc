@@ -1,42 +1,45 @@
----
-title:  "Pourquoi Docker ?"
-categories:
-  - devops
----
+= Pourquoi Docker ?
+:categories: devops
 
-<Toc lang={lang} toc={toc} />
+include::lib/toc.adoc[]
 
-# Pour travailler ensemble
+== Pour travailler ensemble
+
 Tout le monde développe sur différentes machines. Il n'est pas rare que plusieurs collègues aient installé différentes version d'une même library, d'un package manager, du runtime de leur application... (cc node/npm 👋)
 
 Lorsque l'application de développement est dockerisée, tous les devs (et la prod !) sont soumis aux mêmes règles, ce qui évite le syndrôme de _"mais ça marche sur mon PC"_ tout en réduisant la configuration nécessaire à installer l'environnement de dev. Voir juste après !
 
-# Pour moins perdre de temps à configurer
+== Pour moins perdre de temps à configurer
+
 La configuration, c'est du temps passé à ne pas être productif. Plus il y a d'environnements dans lesquels une application doit tourner, plus il y a de configuration à faire. Docker permet d'abstraire l'environnement dans lequel tourne l'application et donc de ne faire que le minimum nécessaire.
 
-Une conséquence notable : pour ajouter un service à la stack, plus forcément besoin d'apprendre en détails une technologie. Il suffit d'ajouter une image existante de celle-ci, et de simplement spécifier les variables d'environnement nécessaires. Par exemple, pour [ajouter une database PostgreSQL](https://hub.docker.com/_/postgres/), il suffit au minimum de renseigner un root password et de monter un volume pour persister les données.
+Une conséquence notable : pour ajouter un service à la stack, plus forcément besoin d'apprendre en détails une technologie. Il suffit d'ajouter une image existante de celle-ci, et de simplement spécifier les variables d'environnement nécessaires. Par exemple, pour https://hub.docker.com/_/postgres/[ajouter une database PostgreSQL], il suffit au minimum de renseigner un root password et de monter un volume pour persister les données.
 
-# Pour séparer les problèmes
+== Pour séparer les problèmes
+
 Comme chaque service est aussi simple que possible, chacun n'a que très peu de dépendances avec le reste du monde. On voit que, par nature, les conteneurs nous poussent à n'avoir que le minimum vital de dépendances entre services.
 
 Par dépendances, je pense en particulier à :
+
 - Système, programmes, libraries installées
 - Configurations associées à ce setup
 - Volumes (fichiers)
 - Accès réseau
 
-# Pour gérer et sécuriser les connexions réseau
-Car oui : c'est vite fait de faire fuiter le port d'une database, et [quand elle n'est pas sécurisée c'est gênant](https://www.bleepingcomputer.com/news/security/new-meow-attack-has-deleted-almost-4-000-unsecured-databases/) 😬
+== Pour gérer et sécuriser les connexions réseau
 
-L'idée est de penser un service comme une boîte noire qui expose un ou plusieurs ports. Les services communiquent entre eux grâce aux volumes montés en commun ou à travers des ports internes. En effet, les [services appartenant à un même réseau](https://docs.docker.com/compose/networking/) peuvent par défaut s'accéder entre eux.
+Car oui : c'est vite fait de faire fuiter le port d'une database, et https://www.bleepingcomputer.com/news/security/new-meow-attack-has-deleted-almost-4-000-unsecured-databases/[quand elle n'est pas sécurisée c'est gênant] 😬
 
+L'idée est de penser un service comme une boîte noire qui expose un ou plusieurs ports. Les services communiquent entre eux grâce aux volumes montés en commun ou à travers des ports internes. En effet, les https://docs.docker.com/compose/networking/[services appartenant à un même réseau] peuvent par défaut s'accéder entre eux.
 
-# Pièges et trucs à savoir
+== Pièges et trucs à savoir
+
 Sous Windows et Mac, les conteneurs tournent sur une VM. Du coup c'est lent, pas natif et les lectures/écritures disque peuvent ralentir l'édition de fichiers. La solution est simple : utilise Linux 😏 (ou un Windows/Mac puissant)
 
 Lorsqu'un même volume (dossier) est monté en écriture dans deux conteneurs à la fois, on peut se retrouver avec des comportements inattendus : chez moi, l'intégralité du dossier généré par un run de build disparaissait en même temps que le conteneur à la fin du run. Je recommande donc vivement de ne monter en écriture qu'un seul fichier ou dossier à la fois.
 
 C'est possible de ne partager en écriture qu'une partie d'une même arborescence commune. Par exemple, si `backend` et `frontend` partagent `code` en lecture mais que `backend` doit écrire dans `code/target` et `frontend` doit écrire dans `code/dist`, alors les volumes peuvent être surchargés comme ceci :
+
 ```yml
 backend:
   volumes:
@@ -49,27 +52,27 @@ webapp:
     - ./code/dist:/code/dist
 ```
 
-Les images Docker peuvent vite prendre de l'espace disque. Mais avec le temps, la communauté opte de plus en plus pour des versions minimalistes de chaque image. Autrefois avec une version _slim_ de Debian, et aujourd'hui souvent avec une version [Alpine Linux](https://alpinelinux.org/about/) qui permet aux images de faire moins de 10Mo de base ! Préfère-donc utiliser les tags `-alpine` de chaque image.
+Les images Docker peuvent vite prendre de l'espace disque. Mais avec le temps, la communauté opte de plus en plus pour des versions minimalistes de chaque image. Autrefois avec une version _slim_ de Debian, et aujourd'hui souvent avec une version https://alpinelinux.org/about/[Alpine Linux] qui permet aux images de faire moins de 10Mo de base ! Préfère-donc utiliser les tags `-alpine` de chaque image.
 
 Enfin, la gestion des permissions est déroutante au début. Docker tourne en root par défaut et a de bonnes raisons de le faire : autant dire que j'apprécie de pouvoir ouvrir les ports 80 ou 443 en dev comme en prod 🙂
 
-Pour mieux comprendre pourquoi et comment bien gérer ses permissions : [voir cet article](/fr/blog/gerer-ses-permissions-avec-docker).
+Pour mieux comprendre pourquoi et comment bien gérer ses permissions : link:/fr/blog/gerer-ses-permissions-avec-docker[voir cet article].
 
-
-# Par où commencer?
+== Par où commencer?
 
 En prenant le temps de lire la doc dans l'ordre, tout ne peut que bien se passer :
 
-1. [Comprends Docker](https://docs.docker.com/get-started/overview/)
-2. [Comprends docker-compose](https://docs.docker.com/compose/) pour simplement faire cohabiter les services entre eux
-3. Installe [docker](https://docs.docker.com/engine/install/) et [docker-compose](https://docs.docker.com/compose/install/)
-4. [Ajoute ton user au groupe `docker`](https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user) pour piloter le daemon sans `sudo`
+1. https://docs.docker.com/get-started/overview/[Comprends Docker]
+2. https://docs.docker.com/compose/[Comprends docker compose] pour simplement faire cohabiter les services entre eux
+3. Installe https://docs.docker.com/engine/install/[docker] et https://docs.docker.com/compose/install/[son plugin compose]
+4. https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user[Ajoute ton user au groupe `docker`] pour piloter le daemon sans `sudo`
 5. C'est parti ! N'oublie pas de garder la configuration la plus simple possible.
 
-<details open={false}>
-<summary>Exemple</summary>
-
+[%collapsible]
+.Exemple
+====
 Une stack complète React/Rust/PostgreSQL pourrait être lancée avec la simple config suivante à la racine d'un projet :
+
 ```yml
 version: "3"
 services:
@@ -95,7 +98,6 @@ services:
   webapp:
     image: node:alpine
     environment:
-      - YARN_VERSION=1.22
       - BACKEND_URL=http://backend:4000/
     volumes:
       - ./webapp/:/home/webapp
@@ -104,6 +106,5 @@ services:
       - 80:8080
 ```
 
-`docker-compose up -d` et c'est parti directement sur [localhost](http://localhost) ! 💻
-
-</details>
+`docker compose up -d` et c'est parti directement sur http://localhost[localhost] ! 💻
+====

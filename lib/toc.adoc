@@ -1,0 +1,12 @@
+:toc-title!:
+
+:collapsible-title: Summary
+ifeval::["{lang}" == "fr"]
+:collapsible-title: Table des matières
+endif::[]
+
+.{collapsible-title}
+[%collapsible%open]
+====
+toc::[]
+====

@@ -1,7 +1,4 @@
 module.exports = {
-  //devIndicators: {
-  //  buildActivity: false,
-  //},
   poweredByHeader: false,
   i18n: {
     locales: ["en", "fr"],
@@ -9,7 +6,7 @@ module.exports = {
   },
   webpack: (config) => {
     config.module.rules.push({
-      test: /\.mdx?$/,
+      test: /\.adoc?$/,
       use: "raw-loader",
     })
     return config

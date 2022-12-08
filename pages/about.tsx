@@ -1,16 +1,16 @@
-import { parseMdx, processRemote } from "lib/mdx"
+import { parseAdoc } from "lib/asciidoc"
 import { GetStaticProps } from "next"
 
 export { About as default } from "lib/About"
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const about = await (locale === "fr"
-    ? parseMdx("fr", require("lib/about.fr.mdx").default)
-    : parseMdx("en", require("lib/about.en.mdx").default))
+    ? parseAdoc("fr", require("lib/about.fr.adoc").default)
+    : parseAdoc("en", require("lib/about.en.adoc").default))
   return {
     props: {
       scope: about,
-      staticSource: await processRemote(about),
+      staticSource: about.html,
     },
   }
 }
