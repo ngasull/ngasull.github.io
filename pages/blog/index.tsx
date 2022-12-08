@@ -4,14 +4,17 @@ import { GetStaticProps } from "next"
 
 export { Blog as default } from "lib/Blog"
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  const articles = (await getArticles()).filter((a) => a.lang === locale)
+export const getStaticProps: GetStaticProps = async ({ locale = null }) => {
+  const articles = (await getArticles()).filter(
+    (a) => a.lang === (locale || "en")
+  )
 
-  if (locale === "en") await generateRSSEn(articles)
   if (locale === "fr") await generateRSSFr(articles)
+  else await generateRSSEn(articles)
 
   return {
     props: {
+      locale,
       articles,
     },
   }

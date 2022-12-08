@@ -8,7 +8,7 @@ export default HomePage
 export const getStaticProps: GetStaticProps = () => {
   return {
     redirect: {
-      destination: "/blog",
+      destination: "/fr/blog",
       permanent: false,
     },
   }

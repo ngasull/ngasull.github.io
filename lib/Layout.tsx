@@ -1,64 +1,65 @@
 import SocialIcon from "lib/SocialIcon"
-import { useRouter } from "next/dist/client/router"
 import Head from "next/head"
-import Link from "next/link"
+import { LocaLink } from "lib/LocaLink"
+import { useLang } from "./useLocale"
 
 export const Layout: React.FC<{
   children: React.ReactNode
   articleTitle?: string
 }> = ({ children, articleTitle }) => {
+  const lang = useLang()
   return (
     <>
       <Head>
         <title>{`${articleTitle || "Articles"} | Nico's Lab`}</title>
       </Head>
-      <Header />
+      <Header lang={lang} />
       <main aria-label="Content">{children}</main>
-      <Footer showBack={!!articleTitle} />
+      <Footer lang={lang} showBack={!!articleTitle} />
     </>
   )
 }
 
-const Header: React.FC = () => {
-  const router = useRouter()
-  const lang = router.locale
+const Header: React.FC<{ lang: string }> = ({ lang }) => {
   return (
     <header className="ng-header">
       <h1>{lang === "fr" ? "Le labo de Nico" : "Nico's lab"}</h1>
       <h3 className="py-2 md:p-0">{"🔭 🎶 🕺"}</h3>
       <nav>
-        <Link href="/">Blog</Link>
+        <LocaLink href="/">Blog</LocaLink>
         {" / "}
-        <Link href="/about">{lang === "fr" ? "À propos" : "About"}</Link>
+        <LocaLink href="/about">
+          {lang === "fr" ? "À propos" : "About"}
+        </LocaLink>
         {" / "}
-        <a href={`/${lang}/rss.xml`}>RSS</a>
+        <LocaLink href="/rss.xml">RSS</LocaLink>
         {" / "}
-        <Link href="/" locale={lang === "fr" ? "en" : "fr"}>
+        <LocaLink href="/" locale={lang === "fr" ? "en" : "fr"}>
           {lang !== "fr" ? "🇫🇷" : "🇬🇧"}
-        </Link>
+        </LocaLink>
       </nav>
     </header>
   )
 }
 
-export const Footer: React.FC<{ showBack: boolean }> = ({ showBack }) => {
-  const router = useRouter()
+export const Footer: React.FC<{ lang: string; showBack: boolean }> = ({
+  lang,
+  showBack,
+}) => {
   return (
     <footer className="mt-8 text-center">
       {showBack && (
         <p>
-          <Link href="/blog">
-            {router.locale === "fr"
-              ? "Retour aux articles  👀"
-              : "Go to articles 👀"}
-          </Link>
+          <LocaLink href="/blog">
+            {lang === "fr" ? "Retour aux articles  👀" : "Go to articles 👀"}
+          </LocaLink>
         </p>
       )}
 
       <p>
         Copyright © 2019
         {new Date().getFullYear() > 2019 && `-${new Date().getFullYear()}`}{" "}
-        <Link href="/about">{"Nicolas\xa0Gasull"}</Link>
+        <LocaLink href="/about">{"Nicolas\xa0Gasull"}</LocaLink>
       </p>
 
       <address className="space-x-5">
@@ -74,12 +75,12 @@ export const Footer: React.FC<{ showBack: boolean }> = ({ showBack }) => {
         <a href="https://www.linkedin.com/in/nicolasgasull">
           <SocialIcon icon="linkedin" />
         </a>
-        <Link href="/about">
+        <LocaLink href="/about">
           <SocialIcon icon="at" />
-        </Link>
-        <Link href="/rss.xml">
+        </LocaLink>
+        <LocaLink href="/rss.xml">
           <SocialIcon icon="rss" />
-        </Link>
+        </LocaLink>
       </address>
     </footer>
   )

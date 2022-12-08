@@ -1,7 +1,8 @@
 import { Layout } from "lib/Layout"
-import Link from "next/link"
+import { LocaLink } from "./LocaLink"
 
 export const Blog: React.FC<{
+  locale?: string
   articles: Array<{
     lang: string
     slug: string
@@ -16,7 +17,7 @@ export const Blog: React.FC<{
       {articles.map(({ lang, slug, title, date, categories }) => (
         <article key={slug}>
           <h3>
-            <Link href={`/blog/${slug}`}>{`📖 ${title}`}</Link>
+            <LocaLink href={`/blog/${slug}`}>{`📖 ${title}`}</LocaLink>
           </h3>
           {`Blog » ${new Date(date).toLocaleString(lang, {
             // @ts-ignore It just works
