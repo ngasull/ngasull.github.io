@@ -4,7 +4,7 @@ import { useMemo } from "react"
 export function useLocale(): string | null {
   const router = useRouter()
   return useMemo(() => {
-    const match = router.route.match(/^\/(fr)\//)
+    const match = router.route.match(/^\/(fr)(\/|$)/)
     return match && match[1]
   }, [router.route])
 }

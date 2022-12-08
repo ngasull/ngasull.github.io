@@ -50,7 +50,7 @@ export const Footer: React.FC<{ lang: string; showBack: boolean }> = ({
     <footer className="mt-8 text-center">
       {showBack && (
         <p>
-          <LocaLink href="/blog">
+          <LocaLink href="/">
             {lang === "fr" ? "Retour aux articles  👀" : "Go to articles 👀"}
           </LocaLink>
         </p>
